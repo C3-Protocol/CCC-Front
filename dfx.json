@@ -1,0 +1,33 @@
+{
+  "canisters": {
+    "ccc": {
+      "frontend": {
+        "entrypoint": "src/index.html"
+      },
+      "source": [
+        "src/assets",
+        "dist/ccc/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "dfx": "0.8.0",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    },
+    "dev": {
+      "providers": [
+        "127.0.0.1:8000"
+      ],
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
