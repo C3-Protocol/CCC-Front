@@ -1,14 +1,14 @@
 export const NFT_ALONE_FACTORY_ID =
-  process.env['DFX_NETWORK'] === 'ic' ? 'ouavu-liaaa-aaaah-qbz3a-cai' : 'q4eej-kyaaa-aaaaa-aaaha-cai'
+  process.env['DFX_NETWORK'] === 'ic' ? '' : 'q4eej-kyaaa-aaaaa-aaaha-cai'
 export const NFT_MULTI_FACTORY_ID =
-  process.env['DFX_NETWORK'] === 'ic' ? 'otbta-gqaaa-aaaah-qbz3q-cai' : 'sgymv-uiaaa-aaaaa-aaaia-cai'
+  process.env['DFX_NETWORK'] === 'ic' ? '' : 'sgymv-uiaaa-aaaaa-aaaia-cai'
 export const WICP_MOTOKO_ID =
-  process.env['DFX_NETWORK'] === 'ic' ? 'o5d6i-5aaaa-aaaah-qbz2q-cai' : 'qhbym-qaaaa-aaaaa-aaafq-cai'
+  process.env['DFX_NETWORK'] === 'ic' ? '' : 'qhbym-qaaaa-aaaaa-aaafq-cai'
 export const STORAGE_EMAIL_CID =
-  process.env['DFX_NETWORK'] === 'ic' ? 'weq3k-2aaaa-aaaai-qaitq-cai' : 't6rzw-2iaaa-aaaaa-aaama-cai'
+  process.env['DFX_NETWORK'] === 'ic' ? '' : 't6rzw-2iaaa-aaaaa-aaama-cai'
 export const WICP_STORAGE_ID =
-  process.env['DFX_NETWORK'] === 'ic' ? 'j5d6o-3iaaa-aaaah-qccra-cai' : '2i5un-taaaa-aaaaa-aab7q-cai'
-export const NFT_MULTI_STORAGE_ID = process.env['DFX_NETWORK'] === 'ic' ? 'sjovp-xaaaa-aaaah-qch7a-cai' : 'n4t2m-tyaaa-aaaaa-aacba-cai'
+  process.env['DFX_NETWORK'] === 'ic' ? '' : '2i5un-taaaa-aaaaa-aab7q-cai'
+export const NFT_MULTI_STORAGE_ID = process.env['DFX_NETWORK'] === 'ic' ? '' : 'n4t2m-tyaaa-aaaaa-aacba-cai'
 export const NFT_ALONE_STORAGE_ID = process.env['DFX_NETWORK'] === 'ic' ? '' : ''
 
 export const LEDGER_CANISTER_ID =
