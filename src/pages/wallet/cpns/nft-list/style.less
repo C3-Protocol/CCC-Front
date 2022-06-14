@@ -1,0 +1,169 @@
+.nft-list-wrapper{
+    margin: 0 auto;
+    height: 100%;
+    .nft-list-sider {
+      overflow-y: scroll;
+      border-right: 1px solid #CDD2D9;
+      .ant-menu {
+        &-submenu {
+          font-size: 16px;
+          font-weight: 600;
+          color: #000000;
+          font-family: Poppins-Medium, Poppins;
+          .ant-menu-item {
+            padding-left: 24px !important;
+            font-weight: 500;
+            color: #6D7278;
+          }
+          &-title {
+            &:hover{
+              color: #000 !important;
+            }
+          }
+        }
+        &-item {
+          color: #000000 ;
+          font-size: 16px;
+          font-family: Poppins-Medium, Poppins;
+          font-weight: 600;
+          &:hover {
+            color: #000 !important;
+          }
+          &::after {
+            display: none;
+          }
+        }
+      }
+      .ant-menu-sub.ant-menu-inline{
+        background-color: #ffffff;
+      }
+
+      .ant-menu-inline .ant-menu-submenu-title,
+      .ant-menu-inline .ant-menu-item {
+        margin: 0px;
+        border-bottom: 1px solid #CDD2D9;
+        height: 60px;
+      }
+      .ant-menu-submenu-selected{
+        background-color: #4338CA;
+        color: #ffffff;
+        .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+          background: #F4F4F4;;
+          color: #000000;
+        }
+        
+      }
+      .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+        background-color: #4338CA;
+        color: #ffffff;
+      }
+      .ant-menu-submenu-arrow{
+        color: #ffffff;
+      }
+    }
+    .top-menu {
+      display: none;
+    }
+    .ant-radio-button-wrapper{
+      margin-right: 20px;
+      border-radius: 6px;
+      color: #999999 !important;
+      border: 1px solid #CDD2D9 !important; 
+      &:hover {
+        color: #4338ca !important;
+      }
+    }
+
+    .ant-radio-button-wrapper-checked{
+      color: #4338ca !important;
+      margin-right: 20px;
+      border: 1px solid #4338CA !important;
+      border-radius: 6px;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .search-input-content {
+      width: 320px;
+      height: 48px;
+      background: #FFFFFF;
+      border-radius: 6px;
+      align-items:center;
+      justify-content:center;
+      display:flex;
+      gap: 20px;
+      padding-right: 10px;
+      border: 1px solid #CDD2D9;
+    }
+  
+    .input-style {
+      background: #0000;
+      width: 90%;
+      border: none;
+    }
+
+    .radio-group {
+      width: 200px;
+      justify-content: flex-end;
+      align-items: center;
+      color: #4338ca !important;
+      border: 1px solid #CDD2D9 !important;
+    }
+
+    .radioButton {
+      height:48px;
+      border: 1px solid #0000;
+      border-radius: 6px;
+    }
+  
+    .child-radio-group {
+      justify-content: flex-end;
+      align-items: center;
+      border: 1px solid transparent !important;
+    }
+
+    .childRadioButton {
+      height:48px;
+      border: 1px solid #0000;
+      border-radius: 6px;
+      background: transparent;
+      
+    }
+
+    .nft-list {
+      position: relative;
+      margin: 0px 0;
+      width: 100%;
+      padding: 30px 0px;
+    }
+    
+    .ant-empty {
+      margin: 0 auto;
+    }
+    .empty-button {
+      margin-top: 25px;
+      width: 200px;
+      height: 50px;
+    }
+    .footer {
+      text-align: right;
+      background: #0000;
+      width: 100%;
+    }
+
+    @media screen and (max-width: 1024px) {
+      width: 98%;
+      .nft-list-sider,
+      .search-input-content {
+        display: none;
+      }
+      .top-menu {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+}

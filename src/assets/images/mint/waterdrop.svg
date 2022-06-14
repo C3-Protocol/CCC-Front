@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="49px" height="62px" viewBox="0 0 49 62" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60 (88103) - https://sketch.com -->
+    <title>椭圆形 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M24.5,62 C40.8333333,46.2223602 49,33.787332 49,24.6949153 C49,11.0562902 38.0309764,0 24.5,0 C10.9690236,0 0,11.0562902 0,24.6949153 C0,33.787332 8.16666667,46.2223602 24.5,62 Z" id="path-1"></path>
+        <filter x="-91.8%" y="-72.6%" width="283.7%" height="245.2%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.1 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="mint首页" transform="translate(-1184.000000, -343.000000)">
+            <g id="椭圆形-2" transform="translate(1184.000000, 343.000000)">
+                <g id="椭圆形">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-2)" xlink:href="#path-1"></use>
+                    <path stroke="#000000" stroke-width="3" d="M24.5,59.9080787 C39.8622657,44.8784734 47.5,33.0657392 47.5,24.6949153 C47.5,11.8820682 37.1998768,1.5 24.5,1.5 C11.8001232,1.5 1.5,11.8820682 1.5,24.6949153 C1.5,33.0657392 9.13773427,44.8784734 24.5,59.9080787 Z" stroke-linejoin="square" fill="#6435FE" fill-rule="evenodd"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

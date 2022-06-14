@@ -1,0 +1,165 @@
+
+.colletion-info-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .banner-content {
+    position: relative;
+    width: 100vw;
+    height: calc(11.5vw + 60px);
+  }
+
+  .banner-wrapper {
+    width: 100vw;
+    height: 11.5vw;
+    position: absolute;
+    left: 0;
+    top: 0;
+    object-fit: cover;
+  }
+
+  .avator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 120px;
+    width: 120px;
+    border-radius: 50%;
+    background: #fff;
+
+    img {
+      width: 110px;
+      margin: 5px;
+      border-radius: 50%;
+      box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 10%);
+    }
+  }
+  .link-layout {
+    position: absolute;
+    bottom: 0px;
+    right: 10vw;
+    display: flex;
+    column-gap: 10px;
+    .link {
+      padding: 10px 0px;
+      // box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+      display: flex;
+      border: 1px solid #cdd2d9;
+      border-radius: 8px;
+      a {
+        display: flex;
+        padding: 2px 14px;
+        &:not(a:last-child) {
+          border-right: 1px solid #cdd2d9;
+        }
+        &:hover {
+          path {
+            fill: #333;
+          }
+        }
+      }
+    }
+  }
+
+  .listing-info {
+    width: 1020px;
+    height: 90px;
+    max-width: 98%;
+    display: flex;
+    margin: 20px;
+    border-radius: 6px;
+    align-items: center;
+    border: 1px solid #cdd2d9;
+    > :not(:last-child) {
+      border-right: 1px solid #cdd2d9;
+    }
+  }
+
+  .vertical-center {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .value {
+      font-weight: 500;
+    }
+  }
+
+  .nft-blurb {
+    max-width: 1020px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    h2 {
+      font-size: 30px;
+      font-family: Poppins-SemiBold, Poppins;
+      font-weight: 600;
+      color: #000000;
+    }
+  }
+  .stake-btn {
+    background: linear-gradient(232deg, #4338ca 0%, #000000 100%);
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15);
+    border-radius: 8px !important;
+    &:hover {
+      color: #fff !important;
+      box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15) !important;
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    .link {
+      right: 2vw;
+      padding: 2px 0px;
+    }
+    .banner-content {
+      height: calc(11.5vw + 30px);
+    }
+    .avator {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 60px;
+      width: 60px;
+      border-radius: 50%;
+      background: #fff;
+
+      img {
+        width: 50px;
+        margin: 5px;
+        border-radius: 50%;
+        box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 10%);
+      }
+    }
+    .listing-info {
+      width: 98%;
+      height: 180px;
+      display: flex;
+      flex-wrap: wrap;
+      margin: 20px 1%;
+      > :not(:last-child) {
+        border: none;
+      }
+      > :nth-child(-n + 3):nth-child(n + 1) {
+        border-bottom: 1px solid #cdd2d9;
+      }
+      > :nth-child(-n + 2):nth-child(n + 1) {
+        border-right: 1px solid #cdd2d9;
+      }
+      > :nth-child(-n + 5):nth-child(n + 4) {
+        border-right: 1px solid #cdd2d9;
+      }
+    }
+    .vertical-center {
+      flex: 33.3%;
+      height: 90px;
+    }
+  }
+}
+

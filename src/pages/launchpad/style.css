@@ -1,0 +1,78 @@
+.launchpad-wrapper .ant-carousel {
+  height: 100%;
+}
+.launchpad-wrapper .ant-carousel .slick-dots li {
+  width: 10px;
+}
+.launchpad-wrapper .ant-carousel .slick-dots li button {
+  background: #999999;
+  height: 10px;
+  border-radius: 50%;
+}
+.launchpad-wrapper .ant-carousel .slick-dots .slick-active {
+  width: 32px;
+}
+.launchpad-wrapper .ant-carousel .slick-dots .slick-active button {
+  background: #4338ca;
+  height: 10px;
+  border-radius: 8px;
+}
+.launchpad-wrapper .launchpad-empty {
+  width: 100%;
+  height: 50px;
+}
+.launchpad-wrapper .launchpad-list {
+  width: 1260px;
+  margin: 0px auto 100px;
+}
+.launchpad-wrapper .launchpad-list h3 {
+  font-size: 30px;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  color: #000000;
+}
+.launchpad-wrapper .launchpad-list-table {
+  width: 100%;
+}
+.launchpad-wrapper .launchpad-list-table .ant-table-thead .ant-table-cell {
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  font-size: 16px;
+  color: #6d7278 !important;
+  background-color: transparent;
+  vertical-align: middle;
+}
+.launchpad-wrapper .launchpad-list-table-row {
+  font-size: 16px;
+  cursor: pointer;
+}
+.launchpad-wrapper .launchpad-list-table-row .ant-table-cell {
+  height: 64px;
+  vertical-align: middle;
+  padding-top: 20px;
+}
+.launchpad-wrapper .launchpad-list-table-row .ant-table-cell .table-name {
+  font-family: Poppins-SemiBold, Poppins;
+}
+.launchpad-wrapper .launchpad-list h3 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 42px;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.launchpad-wrapper .launchpad-list .person-img {
+  width: 40px;
+  height: 40px;
+  padding: 1px;
+  border: 1px solid #cdd2d9;
+  border-radius: 21px;
+  margin-right: 10px;
+}
+@media screen and (max-width: 1260px) {
+  .launchpad-wrapper .launchpad-list {
+    width: 98%;
+    margin: 0px auto 30px;
+  }
+}

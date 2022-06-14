@@ -1,55 +1,114 @@
-import React, { memo } from 'react'
-import LeftMenu from '@/components/menu'
+import React, { memo, useEffect } from 'react'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import AssetsMenu from '@/components/menu'
 import WalletMenuConfig from '@/assets/scripts/walletMenu'
-import { WalletWrapper, FlexWrapper, ScrollWrapper, RightContentWrapper, LeftMenuWrapper } from './style'
-import background from '@/assets/images/wallet_bg.png'
-import { Storage, isCollapsed } from '@/utils/utils'
-import MyWallet from './view/my-wallet'
+import { WalletWrapper, ContentWrapper, TopWrapper, TopHead, WalletContentWrapper, MenuWrapper } from './style'
+import background from '@/assets/images/wallet/stake-bg.png'
+import { isAuthTokenEffect, isCollapsed } from '@/utils/utils'
+import Transaction from './view/transaction'
+import MyNFTs from './view/my-nft'
 import Drew from './view/drew'
-import Offers from './view/offers'
 import Favorites from './view/favorites'
-import { HashRouter, Route, useHistory, Redirect } from 'react-router-dom'
+import Staking from './view/staking'
+import { HashRouter, Route, useHistory } from 'react-router-dom'
+import UserProfile from './cpns/user-profile'
+import LoginView from './view/login'
+import MyCreate from './view/my-create'
+import { getAllCreateCollection } from '@/pages/home/store/actions'
+import { Spin } from 'antd'
 
 function Wallet(props) {
-  //const pathName = props.history.location.pathname
-  let initKey = Storage.get('walletItemKey') ? Storage.get('walletItemKey') : `${WalletMenuConfig[0].key}`
-  if (!initKey.startsWith('/wallet/')) initKey = '/wallet/' + initKey
+  const dispatch = useDispatch()
   const history = useHistory()
+  const params = props.match.params
+  let user = params.user
+  const account = params.account
+  const tab = params.tab
+  const { isAuth, authToken, collectionsConfig, allCreateCollection } = useSelector((state) => {
+    let authToken = state.auth.getIn(['authToken']) || ''
+    return {
+      isAuth: state.auth.getIn(['isAuth']) || false,
+      authToken: authToken,
+      collectionsConfig: state.auth.getIn(['collection']) || [],
+      allCreateCollection: state.auth.getIn(['allCreateCollection'])
+    }
+  }, shallowEqual)
 
-  const handlerItemSelect = (key) => {
-    history.push(key)
+  if (account === 'wallet' && isAuthTokenEffect(isAuth, authToken)) {
+    user = authToken
   }
+  const isSelf = user === authToken
+
+  useEffect(() => {
+    if (isAuth) {
+      if (account === 'auth') history.replace('/assets/wallet/myarts')
+    } else {
+      if (account !== 'auth' && account !== 'account') history.replace('/assets/auth')
+    }
+  }, [isAuth])
+
+  const getCurrentMenu = () => {
+    if (isSelf) {
+      return WalletMenuConfig
+    } else {
+      let menu = []
+      for (let item of WalletMenuConfig) {
+        if (item.key === '/transaction' || item.key === '/staking') continue
+        menu.push(item)
+      }
+      return menu
+    }
+  }
+  const handlerItemSelect = (key) => {
+    let path = `/assets/${account}${key}`
+    if (account === 'account') {
+      path += `/${user}`
+    }
+    history.push(path)
+  }
+
+  useEffect(() => {
+    dispatch(getAllCreateCollection())
+  }, [dispatch])
 
   return (
     <HashRouter>
-      <WalletWrapper bg={background}>
-        <FlexWrapper>
-          {/* 主体内容 */}
-          {!isCollapsed() && (
-            <LeftMenuWrapper className="wallet" bg={background}>
-              <LeftMenu
-                MenuConfig={WalletMenuConfig}
-                currKey={initKey}
-                route={false}
-                currentItemKey={'walletItemKey'}
-                mode={'vertical'}
-                minWidth={'299px'}
+      <WalletWrapper>
+        {/* {user && isSelf && <AirDropManager />} */}
+        <ContentWrapper>
+          {user && (
+            <TopWrapper>
+              <img style={{ width: '100%', height: '220px', objectFit: 'cover' }} src={background} />
+              <UserProfile user={user} />
+            </TopWrapper>
+          )}
+          {user && !isCollapsed() && (
+            <MenuWrapper className="wallet">
+              <AssetsMenu
+                MenuConfig={getCurrentMenu()}
+                currKey={`/${tab}`}
+                currentItemKey={'walletSelected'}
+                mode={'horizontal'}
+                className="ccc-menuConfig-horizontal"
                 handlerItemSelect={handlerItemSelect}
               />
-            </LeftMenuWrapper>
+            </MenuWrapper>
           )}
-          <ScrollWrapper>
-            <RightContentWrapper>
-              <Route exact path="/wallet">
-                <Redirect to="/wallet/mywallet" />
-              </Route>
-              <Route path="/wallet/mywallet" component={MyWallet} />
-              <Route path="/wallet/drew" component={Drew} />
-              <Route path="/wallet/offers" component={Offers} />
-              <Route path="/wallet/favorites" component={Favorites} />
-            </RightContentWrapper>
-          </ScrollWrapper>
-        </FlexWrapper>
+          {collectionsConfig.length > 0 && allCreateCollection !== undefined ? (
+            <WalletContentWrapper>
+              <Route path={'/assets/auth'} component={LoginView} />
+              <Route path={`/assets/${account}/transaction`} component={Transaction} />
+              <Route path={`/assets/:account?/myarts/:user?/:type?`} component={MyNFTs} />
+              <Route path={`/assets/${account}/staking`} component={Staking} />
+              <Route path={`/assets/:account?/drew/:user?`} component={Drew} />
+              <Route path={`/assets/:account?/favorites/:user?`} component={Favorites} />
+              <Route path={`/assets/:account?/createCollections/:user?`} component={MyCreate} />
+              <Route path={`/assets/:account?/createItems/:user?`} component={MyCreate} />
+            </WalletContentWrapper>
+          ) : (
+            <Spin style={{ margin: '60px auto', width: '100%' }} />
+          )}
+        </ContentWrapper>
       </WalletWrapper>
     </HashRouter>
   )

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CountDownWrapper } from './style.js'
+import { CountDownWrapper, CountDownEndTipWrapper } from './style.js'
 
 export default class AirdropCountDown extends Component {
   timer
@@ -66,9 +66,10 @@ export default class AirdropCountDown extends Component {
   render() {
     const { day, hour, minute, second } = this.state
     return hour === 0 && minute === 0 && second === 0 && day === 0 ? (
-      <CountDownWrapper>
-        <div className="time">{'Airdrop has landed'}</div>
-      </CountDownWrapper>
+      <CountDownEndTipWrapper>
+        <div className="landed">{'Airdrop has landed'}</div>
+        <div className="next-round">Next Round: 6pm PST NOV 29th</div>
+      </CountDownEndTipWrapper>
     ) : (
       <div>
         <CountDownWrapper>

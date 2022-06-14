@@ -1,72 +1,32 @@
 import React, { useState, useEffect } from 'react'
-import { Row, Col, Form, List, Avatar, Input, Button, message } from 'antd'
-import { subEmail } from '@/api/handler.js'
-import { FooterWrapper } from './style'
-import footerBg from '@/assets/images/footer/footer_bg.svg'
-import Link01 from '@/assets/images/footer/app_ico_01.png'
-import Link02 from '@/assets/images/footer/app_ico_02.png'
-import Link03 from '@/assets/images/footer/app_ico_03.png'
-import Link04 from '@/assets/images/footer/app_ico_04.png'
-import Link05 from '@/assets/images/footer/app_ico_05.png'
+import './style.less'
+import ContactEmail from '@/assets/images/icon/email.svg'
+import ContactDiscord from '@/assets/images/icon/discord.svg'
+import Medium from '@/assets/images/footer/medium.png'
+import GitHub from '@/assets/images/footer/github.png'
+import Twitter from '@/assets/images/footer/twitter.png'
+import Discord from '@/assets/images/footer/discord.png'
+import Youtube from '@/assets/images/footer/youtube.png'
+import CCCLogo from '@/assets/images/footer/ccc_logo_white.png'
 
 const Footer = React.memo((props) => {
   const [link] = useState([
-    { icon: Link01, url: 'https://t.me/joinchat/sfq9yoY39NUwMmZl' },
-    { icon: Link02, url: 'https://twitter.com/CCCProtocol' },
-    { icon: Link03, url: 'https://medium.com/@CCCProtocol' },
-    { icon: Link04, url: 'https://github.com/C3-Protocol' },
-    { icon: Link05, url: 'https://discord.gg/jgyp6prPuj' }
+    { icon: Twitter, url: 'https://twitter.com/CCCProtocol' },
+    { icon: Medium, url: 'https://medium.com/@CCCProtocol' },
+    { icon: GitHub, url: 'https://github.com/C3-Protocol' },
+    { icon: Discord, url: 'https://discord.gg/jgyp6prPuj' },
+    { icon: Youtube, url: 'https://www.youtube.com/channel/UCI62B4ru5ZPXDRUzxcBSbMQ' }
   ])
-  const [email, setEmail] = useState('')
-  const [loading, setLoading] = useState(false)
 
-  const handleOnChange = (str) => {
-    setEmail(str.target.value)
-  }
-
-  // Subscribe Email
-  const handleSubscribeEmail = async () => {
-    try {
-      setLoading(true)
-      const res = await subEmail(email)
-      if (res.ok) {
-        message.success('Subscribe Success!')
-        setLoading(false)
-      }
-    } catch (err) {
-      console.error(err)
-      setLoading(false)
-    }
-  }
   useEffect(() => {}, [])
   return (
-    <FooterWrapper bg={footerBg}>
-      <div className="content">
-        <div className="form-wrapper">
-          <h3>Join our newsletter</h3>
-          <Form layout="inline" size="large" onFinish={handleSubscribeEmail} autoComplete="off">
-            <Form.Item
-              name="email"
-              rules={[
-                {
-                  type: 'email',
-                  message: 'The input is not valid E-mail!'
-                },
-                {
-                  required: true,
-                  message: 'Please input your E-mail!'
-                }
-              ]}
-            >
-              <Input type="text" placeholder="Your email address" onChange={handleOnChange} />
-            </Form.Item>
-            <Form.Item>
-              <Button type="default" htmlType="submit" loading={loading}>
-                Subscribe
-              </Button>
-            </Form.Item>
-          </Form>
-        </div>
+    <div className="footer-wrapper">
+      <div className="content-left">
+        <img className="title" src={CCCLogo}></img>
+        <p>
+          CCC stands for Crowd Created Collectables, the first entirely decentralized collaborative platform with a
+          unique goal of connecting and allowing 50 million creators to participate in Web3 world.
+        </p>
         <div className="list">
           {link.map((item, index) => {
             return (
@@ -77,8 +37,47 @@ const Footer = React.memo((props) => {
           })}
         </div>
       </div>
-    </FooterWrapper>
+      <div className="content-right">
+        <h4>Contact us</h4>
+        <div className="flex-10">
+          <div className="tip-img">
+            <img src={ContactEmail}></img>
+          </div>
+          <span>C3-Protocol@outlook.com</span>
+        </div>
+        <div className="margin-10 flex-10">
+          <div className="tip-img">
+            <img src={ContactDiscord}></img>
+          </div>
+          <span>CCC_Official#6678</span>
+        </div>
+      </div>
+    </div>
   )
+  // return (
+  //   <FooterWrapper bg={footerBg} bg1={footerBg1} bg2={footerBg2}>
+  //     <div className="content">
+  //       <div className="form-wrapper">
+  //         <h3>Join our newsletter</h3>
+  //         <div className="flex-0">
+  //           <Input type="text" placeholder="Your email address" onChange={handleOnChange} />
+  //           <Button type="default" htmlType="submit" loading={loading}>
+  //             Subscribe
+  //           </Button>
+  //         </div>
+  //       </div>
+  //       <div className="list">
+  //         {link.map((item, index) => {
+  //           return (
+  //             <a href={item.url} target="_blank" rel="noopener noreferrer" key={index}>
+  //               <img src={item.icon} />
+  //             </a>
+  //           )
+  //         })}
+  //       </div>
+  //     </div>
+  //   </FooterWrapper>
+  // )
 })
 
 export default Footer

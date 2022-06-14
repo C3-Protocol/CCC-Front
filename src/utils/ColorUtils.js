@@ -46,14 +46,18 @@ export function isDark(hsv) {
   return rgb2grayscale(hsv2rgb(hsv)) <= 128
 }
 
-export function getColorString(colorInt) {
+export function getColorArray(colorInt) {
   let color = parseInt(colorInt)
   let string = color.toString(16)
   string = (Array(6).join(0) + string).slice(-6)
   let r = parseInt('0x' + string.slice(0, 2))
   let g = parseInt('0x' + string.slice(2, 4))
   let b = parseInt('0x' + string.slice(4, 6))
-  return rgb2string([r, g, b])
+  return [r, g, b]
+}
+
+export function getColorString(colorInt) {
+  return rgb2string(getColorArray(colorInt))
 }
 
 export function getReverseColorString(colorInt) {

@@ -1,27 +1,36 @@
+// import Hot from '@/assets/images/icon/hot.svg'
+// import New from '@/assets/images/icon/new.svg'
 const MenuConfig = [
   {
-    title: 'Canvas Gallery',
+    title: '',
     key: '/all',
     icon: ''
   },
   {
-    title: 'MarketPlace',
+    title: 'Explore',
     key: '/marketplace',
     icon: ''
   },
   {
+    title: '',
+    key: 'test',
+    type: 'select',
+    multiple: [
+      {
+        title: 'Launchpad',
+        key: '/launchpad'
+        // icon: New
+      },
+      {
+        title: 'AirDrop',
+        key: '/airdrop'
+        // icon: Hot
+      }
+    ]
+  },
+  {
     title: 'Create',
     key: '/create',
-    icon: ''
-  },
-  {
-    title: 'Wallet',
-    key: '/wallet',
-    icon: ''
-  },
-  {
-    title: 'Rules',
-    key: '/rule',
     icon: ''
   }
 ]

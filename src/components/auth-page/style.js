@@ -6,16 +6,42 @@ export const MenuContentWrapper = styled.div(
   width: 100%;
   height: 100%;
   overflow: scroll;
-  @media screen and (max-width: 1152px) {
-    .ant-menu-sub {
+  .ant-menu {
+    padding: 6px;
+    &-submenu {
+      font-size: 20px;
+      font-weight: bolder;
       .ant-menu-item {
         font-size: 20px;
         font-weight: normal;
-        .ant-menu-item-icon {
-          width: 20px;
+      }
+    }
+    &-inline {
+      background-color: #00000000 !important;
+      border-right: 1px solid #00000000 !important;
+    }
+    &-item {
+      font-size: 20px;
+      font-weight: bolder;
+      &::after {
+        display: none;
+      }
+      &-active {
+        color: #4338ca !important;
+      }
+      &-selected {
+        color: #4338ca !important;
+        a {
+          color: #4338ca !important;
+          &:active {
+            color: #4338ca !important;
+          }
         }
       }
     }
+  }
+  @media screen and (max-width: 1152px) {
+    
   }
 `
 )
@@ -40,15 +66,24 @@ export const LoginAuthWrapper = styled.div(
     .button-black {
       flex: 1;
       height: 60px;
+      margin: 0 5px;
+      position: relative;
       border-radius: 10px !important;
       background-color: #000000 !important;
       border: 1px solid #000000 !important;
-      display: flex;
-      align-items:center;
-      justify-content:center;
 
       img {
         max-height: 50px;
+      }
+
+      .child {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      .ant-spin-dot-item {
+        background-color: #fff !important;
       }
     }
   `

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="13px" height="12px" viewBox="0 0 13 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60 (88103) - https://sketch.com -->
+    <title>二维码</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#D0EAFF" offset="0%"></stop>
+            <stop stop-color="#FCF0FF" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-4.8%" y="-13.9%" width="109.7%" height="127.8%" filterUnits="objectBoundingBox" id="filter-2">
+            <feGaussianBlur stdDeviation="50" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <radialGradient cx="50%" cy="0%" fx="50%" fy="0%" r="100%" gradientTransform="translate(0.500000,0.000000),scale(0.159896,1.000000),rotate(90.000000),scale(1.000000,1.339030),translate(-0.500000,-0.000000)" id="radialGradient-3">
+            <stop stop-color="#000000" offset="0%"></stop>
+            <stop stop-color="#4338CA" offset="100%"></stop>
+        </radialGradient>
+        <path d="M3,0 L296.276424,0 C297.380993,-4.2495073e-16 298.276424,0.8954305 298.276424,2 L298.276424,49.0560998 C298.276424,50.1606693 297.380993,51.0560998 296.276424,51.0560998 L210.085075,51.0560998 L210.085075,51.0560998 L186.401694,51.0560998 L3,51.0560998 C1.8954305,51.0560998 1,50.1606693 1,49.0560998 L1,2 C1,0.8954305 1.8954305,2.02906125e-16 3,0 Z" id="path-4"></path>
+        <filter x="-15.1%" y="-88.1%" width="130.3%" height="276.3%" filterUnits="objectBoundingBox" id="filter-5">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="15" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.06 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人主页-弹框效果" transform="translate(-1878.000000, -323.000000)">
+            <rect fill="#FFFFFF" x="0" y="0" width="1920" height="1080"></rect>
+            <ellipse id="椭圆形备份-4" fill-opacity="0.5" fill="url(#linearGradient-1)" filter="url(#filter-2)" cx="988.5" cy="540" rx="1546.5" ry="540"></ellipse>
+            <g id="矩形-2" transform="translate(0.000000, 80.000000)" fill="url(#radialGradient-3)">
+                <rect id="矩形" x="0" y="0" width="1920" height="307"></rect>
+            </g>
+            <g id="矩形-3" transform="translate(1604.000000, 291.000000)">
+                <g id="矩形">
+                    <use fill="black" fill-opacity="1" filter="url(#filter-5)" xlink:href="#path-4"></use>
+                    <use fill="#FFFFFF" fill-rule="evenodd" xlink:href="#path-4"></use>
+                </g>
+            </g>
+            <g id="编组-5" transform="translate(1617.641413, 319.000000)" fill="#000000" fill-rule="nonzero">
+                <g id="二维码备份" transform="translate(261.000000, 4.000000)">
+                    <path d="M8.30769331,8.30769181 L10.1538467,8.30769181 L10.1538467,6.46153879 L12,6.46153879 L12,9.2307694 L10.1538467,9.2307694 L10.1538467,10.153847 L8.30769331,10.153847 L8.30769331,9.2307694 L6.46153996,9.2307694 L6.46153996,6.46153879 L8.30769331,6.46153879 L8.30769331,8.30769181 Z M0,6.46153879 L5.5384622,6.46153879 L5.5384622,12 L0,12 L0,6.46153879 Z M1.84615335,8.30769181 L1.84615335,10.1538448 L3.69230669,10.1538448 L3.69230669,8.30769181 L1.84615335,8.30769181 Z M0,0 L5.5384622,0 L5.5384622,5.53846121 L0,5.53846121 L0,0 Z M1.84615335,1.84615301 L1.84615335,3.69230603 L3.69230669,3.69230603 L3.69230669,1.84615301 L1.84615335,1.84615301 Z M6.46153131,0 L11.9999935,0 L11.9999935,5.53846121 L6.46153131,5.53846121 L6.46153131,0 Z M8.30768465,1.84615301 L8.30768465,3.69230603 L10.153838,3.69230603 L10.153838,1.84615301 L8.30768465,1.84615301 Z M10.153838,10.1538448 L11.9999913,10.1538448 L11.9999913,11.9999978 L10.153838,11.9999978 L10.153838,10.1538448 Z M6.46152265,10.1538448 L8.307676,10.1538448 L8.307676,11.9999978 L6.46152265,11.9999978 L6.46152265,10.1538448 Z" id="形状"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

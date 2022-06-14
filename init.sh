@@ -1,18 +1,11 @@
 #!/bin/bash
-
-dfx canister --no-wallet create --all
-# init internet_identity
-# dfx canister --no-wallet create internet_identity
-# dfx canister --no-wallet install internet_identity --argument '(null)'
-# dfx canister --no-wallet id internet_identity
-
-#"start": "CANISTER_ID=ryjl3-tyaaa-aaaaa-aaaba-cai II_ENV=development webpack serve ",
-
-dfx build --all
-dfx deploy --no-wallet factory
-dfx deploy --no-wallet registry
-
+echo 'start'
+name=$1
 
 #部署到线上
-dfx build --network ic
-dfx deploy --network ic ccc
+dfx build --network ic_$name ccc
+dfx --identity=default canister --network ic_$name --wallet=l2hpj-jiaaa-aaaai-aahwa-cai install ccc  --mode=upgrade
+
+#第一次部署
+#dfx canister --network ic create ccc 
+#dfx deploy --network ic ccc

@@ -1,6 +1,8 @@
-import React, { memo, useState, useImperativeHandle } from 'react'
+import React, { memo, useState, useEffect } from 'react'
 import { PixelSelectFrameBgWrapper, PixelSelectFrame } from './style'
 import { CloseOutlined, CheckOutlined } from '@ant-design/icons'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
+import { changeImageSelectPosition } from '@/components/pixel-thumb/store/actions'
 
 let mouseDown = false
 let downX = -1
@@ -8,28 +10,33 @@ let downY = -1
 let originalX = 0
 let originalY = 0
 function SelectImage(props) {
+  const dispatch = useDispatch()
   const [selectFrameLeft, setSelectFrameLeft] = useState(0)
   const [selectFrameTop, setSelectFrameTop] = useState(0)
   const selectWidth = 30
   const multiple = props.multiple
-  const [imagePixel, setImagePixel] = useState(null)
 
-  useImperativeHandle(props.cRef, () => ({
-    // drawImage 就是暴露给父组件的方法
-    drawImage: (res) => {
-      if (res) {
-        setImagePixel(res)
-      }
-    },
-    resetImage: () => {
-      setImagePixel(null)
-      let canvasElem = document.getElementById('canvasImage')
-      if (canvasElem) {
-        var context = canvasElem.getContext('2d')
-        context.clearRect(0, 0, selectWidth * multiple, selectWidth * multiple)
-      }
+  const { imagePixel } = useSelector((state) => {
+    let imagePixelInfo = (state.piexls && state.piexls.getIn(['imagePixelInfo'])) || {}
+    let imagePixel = null
+    for (let key in imagePixelInfo) {
+      if (imagePixel === null) imagePixel = []
+      let temp = key.split('-')
+      let x = parseInt(temp[0])
+      let y = parseInt(temp[1])
+      imagePixel.push({ x, y, color: imagePixelInfo[key] })
     }
-  }))
+    return {
+      imagePixel: imagePixel
+    }
+  }, shallowEqual)
+
+  useEffect(() => {}, [imagePixel])
+  useEffect(() => {
+    return () => {
+      dispatch(changeImageSelectPosition(null))
+    }
+  }, [])
 
   const initPixels = (canvasElem) => {
     if (canvasElem) {
@@ -100,15 +107,19 @@ function SelectImage(props) {
   const handleMouseUp = (e) => {
     if (mouseDown) {
       mouseDown = false
-      props.updateSelect(Math.floor(selectFrameLeft / multiple), Math.floor(selectFrameTop / multiple))
+      dispatch(
+        changeImageSelectPosition({
+          x: Math.floor(selectFrameLeft / multiple),
+          y: Math.floor(selectFrameTop / multiple)
+        })
+      )
       e.nativeEvent.stopImmediatePropagation()
     }
   }
 
   const onHandlerConfirm = (res) => {
     props.onHandlerImageConfirm(res)
-    props.updateSelect(0, 0)
-    setImagePixel(null)
+    dispatch(changeImageSelectPosition({ x: 0, y: 0 }))
     setSelectFrameLeft(0)
     setSelectFrameTop(0)
   }

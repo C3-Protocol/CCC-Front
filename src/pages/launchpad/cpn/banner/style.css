@@ -1,0 +1,113 @@
+.launchpad-banner-wrapper {
+  width: 100vw;
+  position: relative;
+}
+.launchpad-banner-wrapper .blur-bg {
+  position: absolute;
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  left: 0px;
+  top: 0px;
+  overflow: hidden;
+}
+.launchpad-banner-wrapper .banner-btn {
+  background: #000000 !important;
+  border: 1px solid #000;
+  border-radius: 8px !important;
+}
+.launchpad-banner-wrapper .mint-content {
+  position: absolute;
+  width: 72vw;
+  left: 14%;
+  right: 14%;
+  top: 50%;
+  transform: translateY(-50%);
+  justify-content: space-between;
+  display: flex;
+}
+.launchpad-banner-wrapper .mint-content .left {
+  width: 360px;
+  height: 360px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+.launchpad-banner-wrapper .mint-content .left img {
+  width: 100%;
+}
+.launchpad-banner-wrapper .mint-content .right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: center;
+}
+.launchpad-banner-wrapper .mint-content .right h3 {
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  font-size: 3.5rem;
+  color: #000;
+  line-height: 5rem;
+  text-align: right;
+}
+.launchpad-banner-wrapper .mint-content .right .description {
+  font-size: 20px;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #333333;
+  width: 500px;
+  max-width: 100%;
+  margin-top: 1%;
+  text-align: right;
+}
+.launchpad-banner-wrapper .mint-content .right .mint-button-layout {
+  margin-top: 8%;
+  display: flex;
+  column-gap: 40px;
+  width: 100%;
+  justify-content: flex-end;
+}
+.launchpad-banner-wrapper .mint-content .right .mint-button-layout .ant-btn {
+  width: 240px;
+  height: 50px;
+  border: 1px solid transparent !important;
+}
+.launchpad-banner-wrapper .mint-content .right .mint-button-layout .ant-btn[disabled] {
+  color: #ffffff !important;
+  border: none !important;
+  background: #6d7278 !important;
+}
+@media screen and (max-width: 800px) {
+  .launchpad-banner-wrapper {
+    margin-bottom: 0px;
+  }
+  .launchpad-banner-wrapper .mint-content {
+    width: 95%;
+    left: 2.5%;
+  }
+  .launchpad-banner-wrapper .mint-content .left {
+    display: none;
+  }
+  .launchpad-banner-wrapper .mint-content .right {
+    flex: none;
+    width: 100%;
+  }
+  .launchpad-banner-wrapper .mint-content .right h3 {
+    font-size: 2rem;
+    line-height: 3rem;
+  }
+  .launchpad-banner-wrapper .mint-content .right .description {
+    margin-top: 2%;
+    text-align: right;
+  }
+  .launchpad-banner-wrapper .mint-content .right .mint-button-layout {
+    margin-top: 2%;
+    display: flex;
+    column-gap: 40px;
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

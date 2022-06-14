@@ -1,0 +1,142 @@
+.market-content-wrapper {
+  width: 100%;
+  min-height: 100px;
+}
+.market-content-wrapper .divider {
+  width: 100%;
+  height: 1px;
+  background: #cdd2d980;
+}
+.market-content-wrapper .header {
+  width: 100%;
+  padding: 0 1% 0 1%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+.market-content-wrapper .radio {
+  height: 48px !important;
+  border: 1px solid #0000 !important;
+  border-radius: 6px !important;
+  margin-right: 10px;
+}
+.market-content-wrapper .refresh {
+  width: 23px;
+  height: 23px;
+  display: flex;
+  align-items: center;
+}
+.market-content-wrapper .refresh path {
+  fill: #666666;
+}
+.market-content-wrapper .refresh:hover {
+  color: #4338ca;
+  cursor: pointer;
+}
+.market-content-wrapper .refresh:hover path {
+  fill: #4338ca;
+}
+.market-content-wrapper .turn {
+  animation: turn 1s linear infinite;
+}
+@keyframes turn {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  25% {
+    -webkit-transform: rotate(90deg);
+  }
+  50% {
+    -webkit-transform: rotate(180deg);
+  }
+  75% {
+    -webkit-transform: rotate(270deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.market-tabbar-left {
+  width: fit-content;
+  display: flex;
+  align-items: center;
+}
+.market-tabbar-left img {
+  width: 24px;
+  margin-left: 10px;
+}
+.market-tabbar-left .tip {
+  font-weight: 500;
+}
+.market-tabbar-right {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+}
+.market-tabbar-right .search-input-content {
+  width: 525px;
+  height: 48px;
+  background: #ffffff;
+  border-radius: 6px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  gap: 20px;
+  padding-right: 10px;
+  border: 1px solid #cdd2d9;
+}
+.market-tabbar-right .search-input-content .search-img {
+  width: 20px;
+  height: 20px;
+}
+.market-tabbar-right .input-style {
+  background: #0000;
+  width: 90%;
+  border: none;
+}
+.market-tabbar-right .radio-group {
+  width: 310px;
+  justify-content: flex-end;
+  align-items: center;
+  font-weight: 500;
+  font-size: 16px;
+  color: #333333 !important;
+  text-align: right !important;
+  border: 1px solid #cdd2d9 !important;
+}
+.market-tabbar-right .radioButton {
+  height: 48px;
+  border: 1px solid #0000;
+  border-radius: 6px;
+}
+.market-tabbar-right img {
+  width: 27px;
+  height: 27px;
+}
+.market-tabbar-right button {
+  width: 310px !important;
+  height: 45px;
+  flex: 1;
+  display: flex;
+  color: #4338ca !important;
+  justify-content: space-between !important;
+  align-items: center;
+}
+@media screen and (max-width: 1152px) {
+  .market-tabbar-right {
+    width: 100%;
+  }
+  .market-tabbar-right .search-input-content {
+    display: none;
+  }
+}
+.market-listing {
+  padding: 20px 1% 0;
+  position: relative;
+  min-height: 250px;
+}
+.market-listing .nft-list {
+  width: 100%;
+  padding: 30px 0px;
+}

@@ -1,0 +1,23 @@
+.nft-transaction-wrapper {
+  .ant-table {
+    border-radius: 10px;
+    tr {
+      padding: 0px 30px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    tr:hover td {
+      background: none;
+    }
+    .ant-table-tbody > tr:not(:last-child) > td {
+      border-bottom: 1px solid #e5ebf1;
+    }
+
+    .ant-table-tbody > tr:first-child > td {
+      min-width: fit-content;
+      width: 18vw;
+    }
+  }
+}

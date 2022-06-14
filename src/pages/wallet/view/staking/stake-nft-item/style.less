@@ -1,0 +1,80 @@
+.stake-item-wrapper {
+  width: 100%;
+  padding: 10px 80px;
+  // box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  .box {
+    display: flex;
+    align-items: center;
+    row-gap: 5px;
+    flex: 1;
+    .minus {
+      width: 56px;
+      height: 50px;
+      background: #ffffff;
+      border-radius: 10px 0px 0px 10px;
+      border: 1px solid #000000;
+    }
+    .show {
+      margin-left: 10px;
+    }
+    .stake-btn {
+      background: #000;
+      border-radius: 10px;
+      color: #fff;
+      font-family: Poppins-SemiBold, Poppins;
+      font-size: 16px;
+      font-weight: 600;
+      height: 50px;
+      width: 158px;
+      border: 1px solid #000;
+      &:hover {
+        background: #000000 !important;
+        border: 1px solid transparent !important;
+        color: #fff !important;
+      }
+    }
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .minus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 54px;
+    height: 54px;
+    background: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #4338ca;
+    line-height: 3rem;
+    text-align: center;
+    cursor: pointer;
+  }
+  .subs {
+    display: flex;
+  }
+  @media screen and (max-width: 1152px) {
+    padding: 0px;
+  }
+}
+
+.wallet-modal {
+  background-color: rgba(0, 0, 0, 0.45);
+  .ant-modal-content {
+    .ant-modal-body {
+      padding: 4px 48px 40px 48px;
+      .tips {
+        font-size: 16px;
+        font-family: Poppins-Regular, Poppins;
+        font-weight: 400;
+        color: #6d7278;
+      }
+    }
+  }
+}

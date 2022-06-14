@@ -1,0 +1,32 @@
+@import '@/assets/style/var.less';
+
+.draw-wrapper {
+  .wallet-icon {
+    //background: @yellow-color;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(180deg, #4338ca 0%, #000000 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    img {
+      width: 15px;
+      margin: auto;
+      //background-color: #fff;
+    }
+  }
+  .drawer {
+    .wallet-header {
+      width: 100%;
+      background: @primary-color;
+      display: flex;
+      align-items: center;
+      .title {
+        padding-left: 10px;
+        font-size: 20px;
+        text-transform: capitalize;
+      }
+    }
+  }
+}

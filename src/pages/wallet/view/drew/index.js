@@ -1,41 +1,43 @@
-import React, { memo, useState, useEffect } from 'react'
+import React, { memo, useState, useEffect, useRef } from 'react'
 import { useSelector, shallowEqual } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import { message } from 'antd'
-import { requestCanister, getAllUndoneCanvas, getParticipate } from '@/api/handler'
-import { DrewWrapper, DrewList } from './style'
+import { requestCanister } from '@/api/handler'
+import { getParticipate } from '@/api/nftHandler'
+import { AloneCreate, CrowdCreate, ThemeCreate, M1155Create, Theme1155Create } from '@/constants'
+import NFTList from '@/pages/wallet/cpns/nft-list'
 
-import CavansCover from '@/components/canvas-cover'
-import { AloneCreate, CrowdCreate } from '@/constants'
-
-function Drew() {
+function Drew(props) {
   let mount = true
-  const [drew, setDrew] = useState([])
-  // console.debug('finished bonus res:', drew)
-  const history = useHistory()
-  const [aloneUndone, setAloneUndone] = useState([])
-  const { isAuth } = useSelector((state) => {
+  const typeList = [CrowdCreate, M1155Create, AloneCreate, ThemeCreate, Theme1155Create]
+  const [nfts, setNFTsData] = useState({})
+  const nftsRef = useRef()
+  nftsRef.current = nfts
+
+  const { isAuth, authToken } = useSelector((state) => {
     return {
-      isAuth: state.auth && state.auth.get('isAuth')
+      isAuth: state.auth && state.auth.get('isAuth'),
+      authToken: state.auth.getIn(['authToken']) || ''
     }
   }, shallowEqual)
 
-  const fetchAloneUndoneData = async () => {
-    let data = {
-      type: AloneCreate,
-      success: (res) => {
-        mount && setAloneUndone(res)
-      }
-    }
-    requestCanister(getAllUndoneCanvas, data, false)
-  }
+  const params = props.match.params
+  const account = params.account
+  const user = account === 'wallet' ? authToken : params.user
+
   // get drew data
-  const fetchDrewData = async () => {
+  const fetchDrewData = async (type) => {
     let data = {
+      type: type,
+      prinId: user,
       success: async (res) => {
         console.debug('fetchDrewData res:', res)
         if (mount && res) {
-          setDrew(res)
+          let newData = {}
+          for (let key in nftsRef.current) {
+            if (key !== type) newData[key] = nftsRef.current[key]
+          }
+          newData[type] = res
+          setNFTsData(newData)
         }
       },
       fail: (error) => {
@@ -43,17 +45,16 @@ function Drew() {
         message.error(error)
       }
     }
-    await requestCanister(getParticipate, data)
+    await requestCanister(getParticipate, data, false)
   }
 
-  // jump detail
-  const onItemClick = (info, type) => {
-    if (info.canvasInfo.isNFTOver) {
-      history.push(`/detail/${type}/${info.canvasInfo.tokenIndex}/${info.prinId}`)
-    } else {
-      history.push(`/canvas/${type}/${info.prinId}`)
+  useEffect(() => {
+    if (user) {
+      for (let type of typeList) {
+        fetchDrewData(type)
+      }
     }
-  }
+  }, [user])
 
   useEffect(() => {
     return () => {
@@ -61,44 +62,22 @@ function Drew() {
     }
   }, [])
 
-  useEffect(() => {
-    if (isAuth) {
-      fetchAloneUndoneData()
-      fetchDrewData()
+  const getNFTListData = () => {
+    let data = {}
+    for (let key of typeList) {
+      data[key] = nfts[key] || []
     }
-  }, [isAuth])
+    return data
+  }
 
-  return (
-    <DrewWrapper>
-      {/* <DrewHeader>
-        <Radio.Group defaultValue={status} buttonStyle="solid" onChange={onChangeRadio}>
-          <Radio.Button value="finished">Drew</Radio.Button>
-          <Radio.Button value="unfinished">Unfinished work</Radio.Button>
-        </Radio.Group>
-      </DrewHeader> */}
-      <DrewList>
-        {drew &&
-          drew.map((item, idx) => {
-            const { index, canisterId } = item
-            return (
-              <CavansCover
-                itemIndex={idx}
-                info={[index, canisterId]}
-                type={CrowdCreate}
-                thumbType={'drew'}
-                key={item.index}
-                onItemClick={onItemClick}
-              />
-            )
-          })}
-        {aloneUndone &&
-          aloneUndone.map((item) => {
-            return (
-              <CavansCover key={item[0]} type={AloneCreate} info={item} thumbType={'drew'} onItemClick={onItemClick} />
-            )
-          })}
-      </DrewList>
-    </DrewWrapper>
-  )
+  const getLoadingData = () => {
+    let data = {}
+    for (let key in nfts) {
+      data[key] = true
+    }
+    return data
+  }
+
+  return <NFTList nfts={getNFTListData()} thumbType={'drew'} nftType={'drew'} user={user} loading={getLoadingData()} />
 }
 export default memo(Drew)

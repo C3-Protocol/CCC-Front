@@ -1,43 +1,71 @@
-import React, { memo, useState, useEffect } from 'react'
-import { useDispatch, useSelector, shallowEqual } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { message } from 'antd'
-import { requestCanister, getAllFavorite } from '@/api/handler'
-import { DrewWrapper, DrewList } from './style'
+import React, { memo, useState, useEffect, useRef } from 'react'
+import { useSelector, shallowEqual, useDispatch } from 'react-redux'
+import { requestCanister } from '@/api/handler'
+import { getAllFavoriteByType } from '@/api/nftHandler'
+import { getBlindBoxStatus } from '@/pages/home/store/actions'
+import { AloneCreate, CrowdCreate, ThemeCreate, M1155Create, Theme1155Create } from '@/constants'
+import NFTList from '@/pages/wallet/cpns/nft-list'
 
-import CavansCover from '@/components/canvas-cover'
-import { AloneCreate, CrowdCreate } from '@/constants'
-
-function Favorites() {
+function Favorites(props) {
   let mount = true
-  const history = useHistory()
   const dispatch = useDispatch()
-  const [favorites, setFavorite] = useState({})
-  const { isAuth } = useSelector((state) => {
+  const typeList = [CrowdCreate, M1155Create, AloneCreate, ThemeCreate, Theme1155Create]
+  const { isAuth, authToken, collectionsConfig } = useSelector((state) => {
     return {
-      isAuth: state.auth && state.auth.get('isAuth')
+      isAuth: state.auth && state.auth.get('isAuth'),
+      authToken: state.auth.getIn(['authToken']) || '',
+      collectionsConfig: state.auth.getIn(['collection']) || []
     }
   }, shallowEqual)
+  const [nfts, setNFTsData] = useState({})
+  const nftsRef = useRef()
+  nftsRef.current = nfts
 
-  // jump detail
-  const onItemClick = (info, type) => {
-    if (info.canvasInfo.isNFTOver) {
-      history.push(`/detail/${type}/${info.canvasInfo.tokenIndex}/${info.prinId}`)
-    } else {
-      history.push(`/canvas/${type}/${info.prinId}`)
-    }
+  const params = props.match.params
+  const account = params.account
+  const user = account === 'wallet' ? authToken : params.user
+
+  const requestData = (type) => {
+    requestCanister(
+      getAllFavoriteByType,
+      {
+        type: type,
+        prinId: user,
+        success: (res) => {
+          if (mount) {
+            let newData = {}
+            for (let key in nftsRef.current) {
+              if (key !== type) newData[key] = nftsRef.current[key]
+            }
+            newData[type] = res
+            setNFTsData(newData)
+          }
+        }
+      },
+      false
+    )
   }
 
   useEffect(() => {
-    if (isAuth) {
-      let data = {
-        success: (res) => {
-          mount && setFavorite(res)
+    if (user) {
+      for (let type of typeList) {
+        requestData(type)
+        let item = find(collectionsConfig, { key: type })
+        if (item?.nftType === 'blindbox') {
+          dispatch(getBlindBoxStatus(item))
         }
       }
-      requestCanister(getAllFavorite, data)
     }
-  }, [isAuth])
+  }, [user])
+
+  useEffect(() => {
+    for (let item of collectionsConfig) {
+      requestData(item.key)
+      if (item?.nftType === 'blindbox') {
+        dispatch(getBlindBoxStatus(item))
+      }
+    }
+  }, [collectionsConfig])
 
   useEffect(() => {
     return () => {
@@ -45,39 +73,27 @@ function Favorites() {
     }
   }, [])
 
+  const getNFTListData = () => {
+    let data = {}
+    for (let key of typeList) {
+      data[key] = nfts[key] || []
+    }
+    for (let item of collectionsConfig) {
+      data[item.key] = nfts[item.key] || []
+    }
+    return data
+  }
+
+  const getLoadingData = () => {
+    let data = {}
+    for (let key in nfts) {
+      data[key] = true
+    }
+    return data
+  }
+
   return (
-    <DrewWrapper>
-      <DrewList>
-        {favorites.crowd &&
-          favorites.crowd.map((item, idx) => {
-            const { index, canisterId } = item
-            return (
-              <CavansCover
-                itemIndex={idx}
-                info={[index, canisterId]}
-                type={CrowdCreate}
-                thumbType={'drew'}
-                key={item.index}
-                onItemClick={onItemClick}
-              />
-            )
-          })}
-        {favorites.alone &&
-          favorites.alone.map((item, idx) => {
-            const { index, canisterId } = item
-            return (
-              <CavansCover
-                itemIndex={idx}
-                info={[index, canisterId]}
-                type={AloneCreate}
-                thumbType={'drew'}
-                key={item.index}
-                onItemClick={onItemClick}
-              />
-            )
-          })}
-      </DrewList>
-    </DrewWrapper>
+    <NFTList nfts={getNFTListData()} thumbType={'drew'} nftType={'favorite'} user={user} loading={getLoadingData()} />
   )
 }
 export default memo(Favorites)

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920px" height="505px" viewBox="0 0 1920 505" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 60 (88103) - https://sketch.com -->
+    <title>矩形 3</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <filter x="-8.5%" y="-29.7%" width="116.9%" height="159.4%" filterUnits="objectBoundingBox" id="filter-1">
+            <feGaussianBlur stdDeviation="50 0" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Wallet(ICP)-rules" transform="translate(0.000000, -1997.000000)" fill="#4338CA">
+            <g id="矩形-3" transform="translate(0.000000, 1997.000000)">
+                <rect id="矩形" filter="url(#filter-1)" x="66" y="0" width="1773" height="505"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

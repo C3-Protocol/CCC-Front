@@ -1,29 +1,29 @@
 import React, { memo, useEffect, useState } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
-import { message } from 'antd'
 import { MultiListWrapper, MultiContentWrapper } from './style'
-import { getMarketListNFT } from '@/pages/home/store/request'
 import CavansCover from '@/components/canvas-cover'
-import { AloneCreate, CrowdCreate } from '@/constants'
+import { M1155Create, Theme1155Create, AloneCreate } from '@/constants'
 import { NavLink } from 'react-router-dom'
-import { createHashHistory } from 'history'
 import { RefreshCrowdUndone } from '@/message'
-import { getAllUndoneCanvas, getRecentFinishedCanvas, requestCanister } from '@/api/handler'
-import { isCollapsed } from '@/utils/utils'
+import { getAllUndoneCanvasByType } from '@/pages/home/store/actions'
+import { requestCanister } from '@/api/handler'
+import { factoryGetListingsByType } from '@/api/nftHandler'
+import { isCollapsed, getValueDivide8 } from '@/utils/utils'
 
 export default memo(function AllMultiUndone(props) {
   let mount = true
   const dispatch = useDispatch()
-  const history = useHistory()
-  const [multiUndone, setMultiUndone] = useState([])
-  const [multiDone, setMultiDone] = useState([])
-  const [multiMarket, setMultiMarket] = useState([])
-  const [aloneMarket, setAloneMarket] = useState([])
+  let [aloneMarket, setAloneMarket] = useState([])
+  const MaxCount = 4
 
-  const { isAuth } = useSelector((state) => {
+  const { multi1155Undone, theme1155Undone } = useSelector((state) => {
+    let key1 = `undoneCanvas-${M1155Create}`
+    let multi1155Undone = (state.allcavans && state.allcavans.getIn([key1])) || []
+    let key2 = `undoneCanvas-${Theme1155Create}`
+    let theme1155Undone = (state.allcavans && state.allcavans.getIn([key2])) || []
     return {
-      isAuth: state.auth.getIn(['isAuth']) || false
+      multi1155Undone,
+      theme1155Undone
     }
   }, shallowEqual)
 
@@ -31,88 +31,49 @@ export default memo(function AllMultiUndone(props) {
   useEffect(() => {
     undoneListUpdateFunc()
     if (!props.onlyMultiCanvas) {
-      getMarketListNFT((res) => {
-        if (mount) {
-          setAloneMarket(res.alone)
-          setMultiMarket(res.crowd)
-        }
-      })
+      requestCanister(
+        factoryGetListingsByType,
+        {
+          type: AloneCreate,
+          success: (res) => {
+            res &&
+              res.sort((left, right) => {
+                let value = getValueDivide8(right.sellPrice) - getValueDivide8(left.sellPrice)
+                return value
+              })
+            setAloneMarket(res)
+          }
+        },
+        false
+      )
     }
     const undoneListUpdate = PubSub.subscribe(RefreshCrowdUndone, undoneListUpdateFunc)
     return () => {
+      setAloneMarket = () => false
       mount = false
       PubSub.unsubscribe(undoneListUpdate)
     }
   }, [])
 
   const undoneListUpdateFunc = (topic, info) => {
-    let data = {
-      type: CrowdCreate,
-      success: async (res) => {
-        mount && setMultiUndone(res)
-      }
-    }
-    requestCanister(getAllUndoneCanvas, data, false)
-    requestCanister(
-      getRecentFinishedCanvas,
-      {
-        success: async (res) => {
-          mount && setMultiDone(res)
-        }
-      },
-      false
-    )
-  }
-
-  const onItemClick = (info, type, thumbType) => {
-    if (thumbType === 'crowdUndone') {
-      if (!isAuth) {
-        message.error('Please sign in first')
-        return
-      }
-      // jump '/canvas'
-      history.push(`/canvas/${type}/${info.prinId}`)
-    } else {
-      let history = createHashHistory()
-      history.push(`/detail/${type}/${info.canvasInfo.tokenIndex}/${info.prinId}`)
-    }
+    dispatch(getAllUndoneCanvasByType(Theme1155Create))
   }
 
   const marketContent = () => {
     let res = []
-    if (multiMarket) {
-      let list = multiMarket.slice(0, Math.min(multiMarket.length, 6))
-      let multi =
-        list &&
-        list.map((item) => {
-          return (
-            <CavansCover
-              key={item.baseInfo[1].toText()}
-              type={item.nftType}
-              info={item.baseInfo}
-              thumbType={isCollapsed() ? 'market-nft' : 'home-nft'}
-              colCount={multiMarket.length + aloneMarket.length}
-              className="multi-list"
-              onItemClick={onItemClick}
-            ></CavansCover>
-          )
-        })
-      res.push(...multi)
-    }
-    if (res.length < 6 && aloneMarket) {
-      let list = aloneMarket.slice(0, Math.min(aloneMarket.length, 6 - res.length))
+    if (aloneMarket) {
+      let list = aloneMarket.slice(0, Math.min(aloneMarket.length, MaxCount - res.length))
       let alone =
         list &&
         list.map((item) => {
           return (
             <CavansCover
-              key={item.baseInfo[1].toText()}
+              key={item.baseInfo.prinId.toText()}
               type={item.nftType}
               info={item.baseInfo}
-              colCount={multiMarket.length + aloneMarket.length}
-              thumbType={isCollapsed() ? 'market-nft' : 'home-nft'}
-              className="multi-list"
-              onItemClick={onItemClick}
+              marketInfo={item.sellInfo}
+              colCount={aloneMarket.length}
+              thumbType={'market-nft'}
             ></CavansCover>
           )
         })
@@ -124,74 +85,53 @@ export default memo(function AllMultiUndone(props) {
   return props.onlyMultiCanvas ? (
     <MultiListWrapper>
       <div className="multi-list">
-        {multiUndone &&
-          multiUndone.slice(0, 1).map((item) => {
+        {multi1155Undone &&
+          multi1155Undone.slice(0, 1).map((item) => {
             return (
-              <CavansCover
-                key={item[0]}
-                type={CrowdCreate}
-                thumbType={'crowdUndone'}
-                info={item}
-                className="multi-list"
-                onItemClick={onItemClick}
-              ></CavansCover>
+              <CavansCover key={item.tokenIndex} type={M1155Create} thumbType={'crowdUndone'} info={item}></CavansCover>
             )
           })}
       </div>
     </MultiListWrapper>
   ) : (
     <MultiContentWrapper>
-      {multiUndone && multiUndone.length > 0 && (
+      {((multi1155Undone && multi1155Undone.length > 1) || (theme1155Undone && theme1155Undone.length > 0)) && (
         <MultiListWrapper>
-          {isCollapsed() ? '' : <div className="title">Canvases Available for Painting</div>}
+          {isCollapsed() ? <div /> : <div className="title">Canvas Available for Painting</div>}
           <div className="multi-list">
-            {multiUndone &&
-              multiUndone.slice(0, 1).map((item) => {
+            {multi1155Undone &&
+              multi1155Undone.slice(1).map((item) => {
                 return (
                   <CavansCover
-                    key={item[0]}
-                    type={CrowdCreate}
+                    key={item.tokenIndex}
+                    type={M1155Create}
                     thumbType={'crowdUndone'}
                     info={item}
-                    className="multi-list"
-                    onItemClick={onItemClick}
+                  ></CavansCover>
+                )
+              })}
+            {theme1155Undone &&
+              theme1155Undone.map((item) => {
+                return (
+                  <CavansCover
+                    key={item.tokenIndex}
+                    type={Theme1155Create}
+                    thumbType={'crowdUndone'}
+                    info={item}
                   ></CavansCover>
                 )
               })}
           </div>
         </MultiListWrapper>
       )}
-      {multiDone && multiDone.length > 0 && (
-        <MultiListWrapper>
-          <div className="aloneBg">
-            <div className="title">Completed Canvas</div>
-            <div className="multi-done-list">
-              {multiDone &&
-                multiDone.map((item) => {
-                  return (
-                    <CavansCover
-                      key={item.index}
-                      type={CrowdCreate}
-                      thumbType={'crowdDone'}
-                      info={[item.index, item.canisterId]}
-                      colCount={multiDone.length}
-                      className="multi-list"
-                      onItemClick={onItemClick}
-                    ></CavansCover>
-                  )
-                })}
-            </div>
-          </div>
-        </MultiListWrapper>
-      )}
 
-      {((multiMarket && multiMarket.length > 0) || (aloneMarket && aloneMarket.length > 0)) && (
+      {aloneMarket && aloneMarket.length > 0 && (
         <MultiListWrapper>
           <div className="aloneBg">
-            <div className="title">NFT MarketPlace</div>
+            <div className="title">Canvas NFT Market</div>
             <div className="market-list">{marketContent()}</div>
             <div className="more">
-              <NavLink to={'marketplace'}>{'More >>'}</NavLink>
+              <NavLink to={'marketplace/personal'}>{'More >>'}</NavLink>
             </div>
           </div>
         </MultiListWrapper>

@@ -1,0 +1,100 @@
+@import '@/assets/style/var.less';
+.launchpad-item {
+  border-radius: 6px !important;
+  background: #fff;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  flex: 0 0 360px;
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-4px);
+    border-color: transparent !important;
+    box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.2);
+  }
+
+  .ant-card-body {
+    padding: 0;
+  }
+  .ant-card-actions {
+    border-top: 1px solid #f0f0f0 !important;
+    border-radius: 0 0 6px 6px !important;
+    font-family: Poppins-SemiBold, Poppins;
+    font-weight: 600;
+    color: #4338ca;
+    span {
+      font-size: 16px;
+      &:hover {
+        color: @primary-color !important;
+      }
+    }
+    &:hover {
+      box-shadow: inset 0px 2px 15px 0px rgba(0, 0, 0, 0.15);
+    }
+  }
+
+  .image-content {
+    position: relative;
+    width: 100%;
+  }
+
+  .image-thumb {
+    width: 100%;
+    padding-bottom: 78.75%;
+    position: relative;
+    margin-bottom: 15px;
+    border-radius: 6px 6px 0 0;
+    img {
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      margin-bottom: 5px;
+      border-radius: 10px 10px 0 0;
+      image-rendering: pixelated;
+      overflow: hidden;
+    }
+  }
+
+  .vertical-center {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    align-items: start;
+    text-align: left;
+  }
+
+  .content1 {
+    width: 95%;
+    height: 100px;
+    margin: 0 auto 10px;
+    .small-title {
+      font-size: 16px;
+      font-family: Poppins-SemiBold, Poppins;
+      font-weight: 600;
+      color: #000000;
+    }
+    .limit-lines {
+      font-size: 12px;
+      font-family: Poppins-Regular, Poppins;
+      font-weight: 400;
+      color: #666666;
+    }
+    .flex-space-between {
+      font-size: 14px;
+      font-family: Poppins-SemiBold, Poppins;
+      font-weight: 600;
+      color: #000000;
+    }
+  }
+
+  .ant-card-actions > li:not(:last-child) {
+    border-right: 1px solid transparent;
+  }
+  @media screen and (max-width: 1152px) {
+    .nft-card {
+      flex: 0 0 50%;
+    }
+  }
+}

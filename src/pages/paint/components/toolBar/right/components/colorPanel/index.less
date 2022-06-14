@@ -1,0 +1,115 @@
+.colorpanel {
+    position: relative;
+    .content {
+        display: flex;
+        flex-direction: column;
+        .color-template {
+            display: flex;
+            flex-wrap: wrap;
+            width: 100%;
+            .color-template-item {
+                width: 34px;
+                height: 34px;
+                border: 1px solid #808080;
+                margin: 1px;
+                cursor: pointer;
+                &:hover {
+                    border: 1px solid #64a5e7;
+                }
+            }
+        }
+
+        .main-color,
+        .sub-color {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+            margin: 0px 5px;
+            padding: 5px;
+            justify-content: center;
+            text-align: center;
+            border: 1px solid transparent;
+            cursor: pointer;
+
+            &:hover {
+                background-color: #d5e3f3;
+                border: #cbe0f7
+            }
+        }
+
+        .active-color-type {
+            background-color: #bcdbfa;
+            border: 1px solid #a1cefa;
+        }
+
+        .color-box1 {
+            height: 32px;
+            width: 32px;
+        }
+
+        .color-box2 {
+            height: 28px;
+            width: 28px;
+            margin: 2px;
+        }
+
+        .color-box1,
+        .color-box2 {
+            border: 1px solid #808080;
+            padding: 1px;
+        }
+
+        .color-result {
+            display: flex;
+        }
+
+        .color-picker {
+            margin-left: 10px;
+            width: 45px;
+            text-align: center;
+
+            .makeStyles-root-5 {
+                margin: 0;
+                display: inline-block;
+            }
+        }
+        .material-color-box {
+            width: 100%;
+            .MuiBox-root{
+                width: 100% !important;
+                overflow:unset !important
+            }
+            .muicc-colorbox-hsvgradient{
+                 width: 100% !important;
+                     margin: '20px 0px 0px 0px ' !important;
+                min-height: 240px;
+                 >div {
+                     min-height: 240px !important;
+                 }
+
+            }
+            .muicc-colorbox-sliders{
+                width: 100% !important;
+            }
+        
+            .muicc-colorbox-colorBg{
+                width: 20px !important;
+                height: 20px !important;
+                border: 0px !important;
+                .muicc-colorbox-color{
+                     width: 20px !important;
+                     height: 20px !important;
+                     border: 0px !important;
+                }
+            }
+        }
+    }
+
+    .title {
+        width: 100%;
+        text-align: center;
+        position: absolute;
+        bottom: 0px;
+    }
+}

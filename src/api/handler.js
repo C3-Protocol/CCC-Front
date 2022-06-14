@@ -1,4 +1,4 @@
-import CanisterManager from './canisterManager'
+import { canisterManager } from './canisterManager'
 import { Principal } from '@dfinity/principal'
 import ErrorMessage from '@/assets/scripts/errorCode'
 import RosettaApi from '../ic/RosettaApi'
@@ -6,67 +6,61 @@ import {
   principalToAccountId,
   getSubAccountArray,
   bignumberToBigInt,
-  getValueDivide8,
-  getValueMultiplied8
+  getValueMultiplied8,
+  plusBigNumber
 } from '../utils/utils'
 import BigNumber from 'bignumber.js'
-import { NFT_ALONE_FACTORY_ID, NFT_MULTI_FACTORY_ID } from 'canister/local/id.js'
-import { AloneCreate, CrowdCreate } from '@/constants'
-import { DFINITY_TYPE, PLUG_TYPE } from '../constants'
+import {
+  NFT_ALONE_FACTORY_ID,
+  NFT_MULTI_FACTORY_ID,
+  NFT_ZOMBIE_FACOTRY_ID,
+  NFT_THEME_FACTORY_ID
+} from 'canister/local/id.js'
+import { DFINITY_TYPE, PLUG_TYPE, STOIC_TYPE, INFINITY_TYPE, C3ProtocolUrl, homeListUrl } from '@/constants'
+import { getAllUserName } from './userHandler'
+import axios from 'axios'
+import { find } from 'lodash-es'
 
-const canisterManager = new CanisterManager()
 const rosettaApi = new RosettaApi()
 
-////代码需要整理
-////代码需要整理
-
-const isAlone = (type) => {
-  return type === AloneCreate
+export async function lessBalanceApproveWICPNat(prinId) {
+  let fetch = await canisterManager.getWICPMotoko(false)
+  let amount = await getAllowance(prinId)
+  let principal = await canisterManager.getCurrentPrinId()
+  if (principal) {
+    let balance = await fetch.balanceOf(principal)
+    if (amount < balance) {
+      //授权额度小于余额则授权
+      let args1 = Principal.fromText(prinId)
+      let fetch = await canisterManager.getWICPMotoko(true)
+      let res = await fetch.approve(args1, balance)
+      return res
+    }
+  }
 }
 
-const getCanisterByType = async (type, prinId, needIdentity) => {
-  let fetch = await canisterManager.getCanvasCanister(type, prinId, needIdentity)
-  return fetch
-}
-
-async function approveWICPNat(prinId) {
+export async function approveWICPNat(prinId) {
   let fetch = await canisterManager.getWICPMotoko(true)
   let principal = await canisterManager.getCurrentPrinId()
   if (principal) {
-    console.log('principal = ', principal.toText())
     let args1 = Principal.fromText(prinId)
     let args2 = await fetch.balanceOf(principal)
-    console.log('balance = ', args2)
     let res = await fetch.approve(args1, args2)
     return res
   }
 }
 
-async function getAllowance(prinId) {
+export async function getAllowance(prinId) {
   let fetch = await canisterManager.getWICPMotoko(false)
   let principal = await canisterManager.getCurrentPrinId()
   if (principal) {
-    console.log('principal = ', principal.toText())
     let spender = Principal.fromText(prinId)
     let amount = await fetch.allowance(principal, spender)
-    console.log('getAllowance amount = ', amount)
     return amount
   }
   return 0
 }
 
-// factor canister
-const getNftFactoryByType = async (type, isAuth) => {
-  let fetch = isAlone(type)
-    ? await canisterManager.getAloneNFTFactory(isAuth)
-    : await canisterManager.getMultiNFTFactory(isAuth)
-  return fetch
-}
-
-const getFactoryStorageByType = async (type) => {
-  let fetch = isAlone(type) ? await canisterManager.getNFTAloneStroage() : await canisterManager.getNFTMultiStroage()
-  return fetch
-}
 export async function initLoginStates(callback) {
   return await canisterManager.initLoginStates(callback)
 }
@@ -80,11 +74,15 @@ export async function authLoginOut(callback) {
 }
 
 export async function authLogin(type, callback) {
-  console.log('type = ', type, DFINITY_TYPE)
+  console.debug('type = ', type, DFINITY_TYPE)
   if (type === DFINITY_TYPE) {
     await canisterManager.authLogin(callback)
   } else if (type === PLUG_TYPE) {
     await canisterManager.plugLogin(callback)
+  } else if (type === STOIC_TYPE) {
+    await canisterManager.stoicLogin(callback)
+  } else if (type === INFINITY_TYPE) {
+    await canisterManager.infinityLogin(callback)
   }
 }
 
@@ -100,7 +98,7 @@ export async function requestCanister(reqFunc, data, mustLogin = true) {
     .then((res) => {
       notice && notice()
       if (res.err) {
-        console.warn('response error:', res.err)
+        console.log('response error:', res.err)
         for (let key in res.err) {
           fail && fail(ErrorMessage[key], key)
         }
@@ -109,167 +107,72 @@ export async function requestCanister(reqFunc, data, mustLogin = true) {
       }
     })
     .catch((err) => {
+      console.error('request error', err)
       notice && notice()
       error && error(err)
-      console.error('error :' + err)
     })
 }
 
-export async function mintPixelCanvas(data) {
-  let { type, description, name } = data
-  let fetch = await getNftFactoryByType(type, true)
-  if (!fetch) {
-    return { err: { NotCanister: 1 } }
+export async function promiseAllFunc(funcs, data) {
+  let { success, fail, notice, error } = data
+  let promise = []
+  for (let func of funcs) {
+    promise.push(
+      new Promise(async (resolve, reject) => {
+        resolve(await func(data))
+      }).then((result) => result)
+    )
   }
-  /** auth temp begin **/
-  let _pid = isAlone(type) ? NFT_ALONE_FACTORY_ID : NFT_MULTI_FACTORY_ID
-  let amount = await getAllowance(_pid)
-  if (amount == 0) {
-    await approveWICPNat(_pid)
-  }
-  let param = { desc: description, name: name }
-  if (isAlone(type)) {
-    param.backGround = data.background
-  }
-  let res = isAlone(type) ? await fetch.mintAloneCanvas(param) : await fetch.mintMultiCanvas(param)
-  if (res) {
-    if (res.err) {
-      for (let key in res.err) {
-        if (key === 'AllowedInsufficientBalance') {
-          await approveWICPNat(_pid)
+  Promise.all(promise)
+    .then((result) => {
+      for (let res of result) {
+        if (res.err) {
+          console.warn('response error:', res.err)
+          for (let key in res.err) {
+            fail && fail(ErrorMessage[key], key)
+          }
+          return
         }
       }
-    }
-  }
-  return res
+      success && success(result)
+    })
+    .catch((e) => console.log(e))
+    .finally(() => {
+      notice && notice()
+    })
 }
 
-export async function getMintFee(data) {
-  let { type } = data
-  let fetch = await getNftFactoryByType(type, false)
-  let fee = isAlone(type) ? await fetch.getAloneFee() : await fetch.getMultiFee()
-  return fee
-}
-
-export async function drawPixel(data) {
-  let { type, prinId, colors } = data
-  let amount = await getAllowance(prinId)
-  if (amount == 0) {
-    await approveWICPNat(prinId)
+export async function promiseFuncAllType(func, allTypes, data) {
+  let { success, fail, notice, error } = data
+  let promise = []
+  for (let type of allTypes) {
+    promise.push(
+      new Promise(async (resolve, reject) => {
+        data.type = type
+        resolve(await func(data))
+      }).then((result) => result)
+    )
   }
-  let fetch = await getCanisterByType(type, prinId, true)
-  if (fetch) {
-    const res = isAlone(type) ? await fetch.drawPixel(colors) : await fetch.drawPixel(colors, [data.memo])
-    if (res.err) {
-      for (let key in res.err) {
-        if (key === 'AllowedInsufficientBalance') {
-          await approveWICPNat(prinId)
+  Promise.all(promise)
+    .then((result) => {
+      for (let res of result) {
+        if (res.err) {
+          console.warn('response error:', res.err)
+          for (let key in res.err) {
+            fail && fail(ErrorMessage[key], key)
+          }
+          return
         }
       }
-    }
-    return res
-  } else {
-    return { err: { NotCanister: 1 } }
-  }
-}
-
-export async function getAllUndoneCanvas(data) {
-  let { type } = data
-  let fetch = await getNftFactoryByType(type, false)
-  if (fetch) {
-    let res
-    if (isAlone(type)) {
-      let principal = await canisterManager.getCurrentPrinId()
-      res = await fetch.getAllAloneCanvas(principal)
-    } else {
-      res = await fetch.getAllMultipCanvas()
-    }
-    return res || []
-  } else {
-    return []
-  }
-}
-
-export async function getCanisterCanvasInfoById(data) {
-  let { type, prinId } = data
-  let fetch = await getCanisterByType(type, prinId, false)
-  if (fetch) {
-    let res = await fetch.getNftDesInfo()
-    return res
-  }
-}
-
-export async function getCanisterPixelInfoById(data) {
-  let { type, prinId } = data
-  let fetch = await getCanisterByType(type, prinId, false)
-  if (fetch) {
-    let res = await fetch.getAllPixel()
-    return res
-  }
-}
-
-export async function aloneCanvasDrawOver(data) {
-  let { prinId } = data
-  let fetch = await getCanisterByType(AloneCreate, prinId, true)
-  if (fetch) {
-    let res = await fetch.drawOver()
-    if (res) {
-      return res
-    }
-  }
-  return null
-}
-
-//获取名下所有NFT
-export async function getAllNFT() {
-  let principal = await canisterManager.getCurrentPrinId()
-  let fetch = await getNftFactoryByType(AloneCreate, false)
-  let res1 = fetch && (await fetch.getAllNFT(principal))
-  fetch = await getNftFactoryByType(CrowdCreate, false)
-  let res2 = await fetch.getAllNFT(principal)
-  return { alone: res1 || [], crowd: res2 || [] }
-}
-
-//获取自己参与的众创画布
-export async function getParticipate() {
-  let principal = await canisterManager.getCurrentPrinId()
-  let fetch = await getFactoryStorageByType(CrowdCreate)
-  let res = await fetch.getParticipate(principal)
-  console.log('getParticipate res', res)
-  return res
-}
-
-export async function getMultiCanvasBouns(prinId) {
-  let fetch = await getCanisterByType(CrowdCreate, prinId, false)
-  let res = await fetch.getBonus()
-  return res
-}
-
-//获取自己收藏的
-export async function getAllFavorite() {
-  let principal = await canisterManager.getCurrentPrinId()
-  let fetch = await getFactoryStorageByType(AloneCreate)
-  let res1 = fetch && (await fetch.getFavorite(principal))
-
-  fetch = await getFactoryStorageByType(CrowdCreate)
-  let res2 = fetch && (await fetch.getFavorite(principal))
-  return { alone: res1 || [], crowd: res2 || [] }
-}
-
-//自己收藏
-export async function setFavorite(data) {
-  let { type, tokenIndex, prinId } = data
-  let fetch = await getNftFactoryByType(type, true)
-  let ret = await fetch.setFavorite({ index: tokenIndex, canisterId: Principal.fromText(prinId) })
-  return ret
-}
-
-//取消收藏
-export async function cancelFavorite(data) {
-  let { type, tokenIndex, prinId } = data
-  let fetch = await getNftFactoryByType(type, true)
-  let ret = await fetch.cancelFavorite({ index: tokenIndex, canisterId: Principal.fromText(prinId) })
-  return ret
+      success && success(result)
+    })
+    .catch((e) => {
+      console.log(e)
+      error && error(e)
+    })
+    .finally(() => {
+      notice && notice()
+    })
 }
 
 export async function balanceWICP(data) {
@@ -284,7 +187,7 @@ export async function balanceICP(data) {
   let account = principalToAccountId(Principal.fromText(curPrinId))
   let ledgercanister = await canisterManager.getLedgerCanister(false)
   let icpBalance = await ledgercanister.account_balance_dfx({ account: account })
-  return icpBalance ? getValueDivide8(icpBalance.e8s) : 0 // 接口拿
+  return icpBalance ? icpBalance.e8s : 0 // 接口拿
 }
 
 export async function transferIcp2Icp(data) {
@@ -320,107 +223,26 @@ export async function transferWIcp2Icp(data) {
 }
 
 export async function transferIcp2WIcp(data) {
+  let { onChange } = data
   let fetch = await canisterManager.getWICPMotoko(true)
   let toAddr = await fetch.getReceiveICPAcc()
   data['address'] = toAddr[0]
   let blockHeight = await transferIcp2Icp(data)
+  onChange && onChange(1)
   if (blockHeight) {
     console.log('blockHeight =' + blockHeight)
     let subaccount = [getSubAccountArray(0)]
-    let result = await fetch.mint({ from_subaccount: subaccount, blockHeight: blockHeight })
+    let result = await fetch.swap({ from_subaccount: subaccount, blockHeight: blockHeight })
+    onChange && onChange(2)
     approveWICPNat(NFT_ALONE_FACTORY_ID)
     approveWICPNat(NFT_MULTI_FACTORY_ID)
+    approveWICPNat(NFT_ZOMBIE_FACOTRY_ID)
+    approveWICPNat(NFT_THEME_FACTORY_ID)
+    onChange && onChange(3)
     return result
   } else {
     return null
   }
-}
-
-// get oder listings
-export async function factoryGetListings() {
-  let res1 = (await factoryGetListingsByType(AloneCreate)) || []
-  let res2 = (await factoryGetListingsByType(CrowdCreate)) || []
-  return { alone: res1, crowd: res2 }
-}
-
-//获取所有挂单
-export async function factoryGetListingsByType(type) {
-  let fetch = await getNftFactoryByType(type, false)
-  if (fetch) {
-    let res = await fetch.getListings()
-    if (res) {
-      let nftInfoArray = []
-      for (const _nft of res) {
-        var { 0: base, 1: sellInfo } = _nft
-        var { price } = sellInfo
-        nftInfoArray.push({
-          baseInfo: [base.index, base.canisterId],
-          nftType: type,
-          sellInfo: sellInfo,
-          sellPrice: new BigNumber(price).dividedBy(Math.pow(10, 8)).toFixed()
-        })
-      }
-
-      return nftInfoArray
-    }
-  }
-  return
-}
-
-// 根据index查询prinid
-export async function factoryGetNFTByIndex(data) {
-  let { type, index } = data
-  let fetch = await getNftFactoryByType(type, false)
-  if (fetch) {
-    let res = await fetch.getNFTByIndex(index)
-    if (res) {
-      return res
-    }
-  }
-  return
-}
-
-// new a oder list
-// args = {tokenIndex : 0, price : 10000}
-//挂单
-export async function addFactoryList(data) {
-  let { tokenIndex, price, type } = data
-  let args = { tokenIndex: tokenIndex, price: price }
-  let fetch = await getNftFactoryByType(type, true)
-  if (fetch) {
-    let res = await fetch.list(args)
-    if (res) {
-      return res
-    }
-  }
-  return null
-}
-
-//买卖
-export async function factoryBuyNow(data) {
-  console.log('factoryBuyNow data = ', data)
-  let { type, tokenIndex } = data
-  let _pid = isAlone(type) ? NFT_ALONE_FACTORY_ID : NFT_MULTI_FACTORY_ID
-  let amount = await getAllowance(_pid)
-  if (amount == 0) {
-    await approveWICPNat(_pid)
-  }
-  let fetch = await getNftFactoryByType(type, true)
-  if (fetch) {
-    let res = await fetch.buyNow(tokenIndex)
-    console.debug('[factoryBuyNow] buyNow res:', res)
-    if (res) {
-      if (res.err) {
-        for (let key in res.err) {
-          if (key === 'AllowedInsufficientBalance') {
-            await approveWICPNat(_pid)
-          }
-        }
-      }
-      return res
-    }
-  }
-  return null
 }
 
 export async function getICPTransaction(data) {
@@ -432,125 +254,26 @@ export async function getICPTransaction(data) {
 export async function getWICPTransaction(data) {
   let { prinId } = data
   let principal = Principal.fromText(prinId)
-  console.log('transaction prinid', prinId)
   let fetch = await canisterManager.getWICPStorage()
   let res = await fetch.getHistoryByAccount(principal)
-  //console.log('transaction res', res)
+  let set = new Set()
+  for (let item of res) {
+    item.from && item.from.length && set.add(item.from[0].toText())
+    item.to && item.to.length && set.add(item.to[0].toText())
+  }
+  await getAllUserName([...set])
   return res
 }
 
-//获取挂单信息
-export async function getNFTListingInfo(data) {
-  let { type, tokenIndex } = data
-  let fetch = await getNftFactoryByType(type, false)
-  let res = fetch && (await fetch.isList(tokenIndex))
-  return res || {}
-}
-
-//取消挂单
-export async function cancelNFTList(data) {
-  let { type, tokenIndex } = data
-  let fetch = await getNftFactoryByType(type, true)
-  let res = fetch && (await fetch.cancelList(tokenIndex))
-  return res || {}
-}
-
-//查询nft owner
-export async function getNFTOwner(data) {
-  let { type, tokenIndex } = data
-  let fetch = await getNftFactoryByType(type, false)
-  let res = fetch && (await fetch.ownerOf(tokenIndex))
-  return res || {}
-}
-
-export async function getHighestPosition(data) {
-  let { prinId } = data
-  let fetch = await getCanisterByType(CrowdCreate, prinId, false)
-  let highest = fetch && (await fetch.getHighestPosition())
-  return highest || {}
-}
-
 // Subscribe to email
-
 export async function subEmail(email) {
   let fetch = await canisterManager.getStorageMotoko()
   let res = await fetch.addCccMailSub(email)
   return res
 }
 
-export async function getConsumeAndBalance(data) {
-  let { prinId } = data
-  let fetch = await getCanisterByType(CrowdCreate, prinId, true)
-  let res = fetch && (await fetch.getAccInfo())
-  return res || {}
-}
-
-export async function isCanvasOver(data) {
-  let { type, prinId } = data
-  let fetch = await getCanisterByType(type, prinId, false)
-  let res = fetch && (await fetch.isOver())
-  return res
-}
-
-export async function getFinshedTime(data) {
-  let { prinId } = data
-  let fetch = await getCanisterByType(CrowdCreate, prinId, false)
-  let res = fetch && (await fetch.getFinshedTime())
-  return res
-}
-
-export async function requestWithdrawIncome(data) {
-  let { type, prinId } = data
-  let fetch = await getCanisterByType(type, prinId, true)
-  let res = fetch && (await fetch.withDrawIncome())
-  approveWICPNat(prinId)
-  return res
-}
-
-//查询自己收否收藏该nft
-export async function isNFTFavoriteByTypeAndId(data) {
-  let { type, prinId, tokenIndex } = data
-  let fetch = await getFactoryStorageByType(type)
-  let principal = await canisterManager.getCurrentPrinId()
-  let res = fetch && (await fetch.isFavorite(principal, { index: tokenIndex, canisterId: Principal.fromText(prinId) }))
-  console.log('fetch ,', fetch, 'res = ', res)
-  return res
-}
-
-//查询历史交易记录
-export async function getTradeHistoryByIndex(data) {
-  let { type, tokenIndex } = data
-  let fetch = await getFactoryStorageByType(type)
-  let res = fetch && (await fetch.getHistory(tokenIndex))
-  return res
-}
-
-//nft 转移
-export async function nftTransferFrom(data) {
-  let { type, to, tokenIndex } = data
-  let fetch = await getNftFactoryByType(type, true)
-  let principal = await canisterManager.getCurrentPrinId()
-  if (principal) {
-    let res = fetch && (await fetch.transferFrom(principal, Principal.fromText(to), tokenIndex))
-    return res
-  }
-}
-
-export async function getMultiDrawRecord(data) {
-  let { prinId } = data
-  let fetch = await getCanisterByType(CrowdCreate, prinId, false)
-  let res = fetch && (await fetch.getDrawRecord())
-  return res
-}
-
 export async function addWhiteList(type, prinId) {
   await canisterManager.getCanvasCanister(type, prinId, true)
-}
-
-export async function getRecentFinishedCanvas() {
-  let fetch = await getNftFactoryByType(CrowdCreate)
-  let res = fetch.getRecentFinshed()
-  return res || []
 }
 
 export async function queryAlias(start, end) {
@@ -572,4 +295,148 @@ export async function queryAlias(start, end) {
 
 export function getCurrentLoginType() {
   return canisterManager.getCurrentLoginType()
+}
+
+export async function handleCollectionConfig(success) {
+  var config = {
+    method: 'get',
+    url: `${C3ProtocolUrl}/config/collections.json?timestamp=${new Date().getTime()}`,
+    headers: {}
+  }
+  axios(config)
+    .then(function (response) {
+      let res = response?.data
+      canisterManager.handleCollectionConfig(res)
+      success && success(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+
+export async function handleAirDropConfig(success) {
+  var config = {
+    method: 'get',
+    url: `${C3ProtocolUrl}/config/airdrop.json?timestamp=${new Date().getTime()}`,
+    headers: {}
+  }
+  axios(config)
+    .then(function (response) {
+      let res = response?.data
+      success && success(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+
+export async function handleLaunchpadConfig(success) {
+  var config = {
+    method: 'get',
+    url: `${C3ProtocolUrl}/config/launchpad.json?timestamp=${new Date().getTime()}`,
+    headers: {}
+  }
+  axios(config)
+    .then(function (response) {
+      let res = response?.data
+      success && success(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+
+export async function handleGetHomeProtocolData(url, success) {
+  var config = {
+    method: 'get',
+    //url: `${baseUrl}/market/listPopularAloneCanvas`,
+    //url: 'http://47.88.25.203:8010/market/listPopularAloneCanvas',
+    url: `${C3ProtocolUrl}${url}`,
+    headers: {}
+  }
+  axios(config)
+    .then(function (response) {
+      let res = response?.data
+      //canisterManager.handleGetHomeList(res)
+      success && success(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+
+export function handleGetCollectiblesList(success) {
+  var config = {
+    method: 'get',
+    //url: `${baseUrl}/market/listPopularAloneCanvas`,
+    //url: 'http://47.88.25.203:8010/market/listPopularAloneCanvas',
+    url: `${C3ProtocolUrl}/config/popular_collectibles.json`,
+    headers: {}
+  }
+  axios(config)
+    .then((response) => {
+      let res = response?.data
+      //canisterManager.handleGetHomeList(res)
+      if (res) {
+        //再次发请求
+        // const eachImg = res.map((va) => {
+        //   return handleGetCollectiblesImg(va)
+        // })
+        // Promise.allSettled(eachImg).then((imgArr) => {
+        //   console.log('=====', imgArr)
+        //   res.forEach((r, index) => {
+        //     //r.image_url = imgArr[index].value
+        //   })
+        //   console.log(res)
+
+        // })
+        success && success(res)
+      }
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+
+export async function handleGetCollectiblesImg(item) {
+  var config = {
+    method: 'get',
+    url: `${baseUrlHome}/resource/popular_collectibles/${item.type}/${item.index}.jpeg`,
+    headers: {}
+  }
+  return axios(config)
+    .then(function (response) {
+      let res = response?.data
+      //canisterManager.handleGetHomeList(res)
+      //再次发请求
+      return res
+      //success && success(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+}
+
+//handleGetTopCollectiblesList
+export async function handleGetTopCollectiblesList(success, value) {
+  var config = {
+    method: 'get',
+    //url: 'https://web-backend.c3-protocol.com/api/v1/ccc/collections',
+    url: `${homeListUrl}/api/v1/ccc/collections?ordering=-day7_volume`,
+    headers: {}
+  }
+  axios(config)
+    .then(function (response) {
+      let res = response?.data
+      //canisterManager.handleGetHomeList(res)
+      let item = find(res.results, { key: 'kverso' })
+      if (item) {
+        item.all_time_volume = plusBigNumber(item.all_time_volume, 236000000000n)
+        item.day7_volume = plusBigNumber(item.day7_volume, 236000000000n)
+      }
+      success && success(res)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
 }

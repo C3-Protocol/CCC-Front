@@ -92,7 +92,7 @@ const ColorPicker = (props) => {
       <ColorInputContent width={transformPxToRem(width)}>
         <Input
           style={{ width: transformPxToRem(width), height: '35px' }}
-          className="ant-input-violet"
+          className="ant-input-violet input-radius4"
           value={value}
           onPressEnter={(e) => handleColorRGBChange(e, type)}
           onChange={(e) => onHandlerInputChange(e, type)}

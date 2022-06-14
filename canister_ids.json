@@ -1,0 +1,21 @@
+{
+  "__Candid_UI": {
+    "ic_line": "aaaaa-aa",
+    "ic_test": "aaaaa-aa",
+    "ic_testline": "aaaaa-aa"
+  },
+  "ccc": {
+    "ic_line": "",
+    "ic_test": "",
+    "ic_testline": ""
+  },
+  "storageKey" : {
+    "ic_test": "",
+    "ic_line": ""
+  },
+  "blindboxKey" : {
+    "ic_test": "",
+    "ic_line": ""
+  } 
+}
+

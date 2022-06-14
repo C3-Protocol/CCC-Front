@@ -1,0 +1,221 @@
+.collection-detail-wrapper {
+  width: 100%;
+  min-height: 100%;
+  background: #fff;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #6d7278;
+}
+.collection-detail-wrapper .top-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.collection-detail-wrapper .top-wrapper .banner-content {
+  position: relative;
+  width: 100vw;
+  height: calc(11.5vw + 60px);
+}
+.collection-detail-wrapper .top-wrapper .banner-wrapper {
+  width: 100vw;
+  height: 11.5vw;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.collection-detail-wrapper .top-wrapper .avator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 120px;
+  width: 120px;
+  border-radius: 50%;
+  background: #fff;
+}
+.collection-detail-wrapper .top-wrapper .avator img {
+  width: 110px;
+  margin: 5px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+}
+.collection-detail-wrapper .top-wrapper .link-layout {
+  position: absolute;
+  bottom: 0px;
+  right: 10vw;
+  display: flex;
+  column-gap: 10px;
+}
+.collection-detail-wrapper .top-wrapper .link-layout .link {
+  padding: 10px 0px;
+  display: flex;
+  border: 1px solid #cdd2d9;
+  border-radius: 8px;
+}
+.collection-detail-wrapper .top-wrapper .link-layout .link a {
+  display: flex;
+  padding: 2px 14px;
+}
+.collection-detail-wrapper .top-wrapper .link-layout .link a:not(a:last-child) {
+  border-right: 1px solid #cdd2d9;
+}
+.collection-detail-wrapper .top-wrapper .link-layout .link a:hover path {
+  fill: #333;
+}
+.collection-detail-wrapper .top-wrapper .listing-info {
+  width: 1020px;
+  height: 90px;
+  max-width: 98%;
+  display: flex;
+  margin: 20px;
+  border-radius: 6px;
+  align-items: center;
+  border: 1px solid #cdd2d9;
+}
+.collection-detail-wrapper .top-wrapper .listing-info > :not(:last-child) {
+  border-right: 1px solid #cdd2d9;
+}
+.collection-detail-wrapper .top-wrapper .vertical-center {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.collection-detail-wrapper .top-wrapper .vertical-center .value {
+  font-weight: 500;
+}
+.collection-detail-wrapper .top-wrapper .nft-blurb {
+  max-width: 1020px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.collection-detail-wrapper .top-wrapper .nft-blurb h2 {
+  font-size: 30px;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  color: #000000;
+}
+.collection-detail-wrapper .top-wrapper .stake-btn {
+  background: linear-gradient(232deg, #4338ca 0%, #000000 100%);
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 8px !important;
+}
+.collection-detail-wrapper .top-wrapper .stake-btn:hover {
+  color: #fff !important;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.15) !important;
+}
+@media screen and (max-width: 1024px) {
+  .collection-detail-wrapper .top-wrapper .link {
+    right: 2vw;
+    padding: 2px 0px;
+  }
+  .collection-detail-wrapper .top-wrapper .banner-content {
+    height: calc(11.5vw + 30px);
+  }
+  .collection-detail-wrapper .top-wrapper .avator {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    background: #fff;
+  }
+  .collection-detail-wrapper .top-wrapper .avator img {
+    width: 50px;
+    margin: 5px;
+    border-radius: 50%;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  }
+  .collection-detail-wrapper .top-wrapper .listing-info {
+    width: 98%;
+    height: 180px;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 20px 1%;
+  }
+  .collection-detail-wrapper .top-wrapper .listing-info > :not(:last-child) {
+    border: none;
+  }
+  .collection-detail-wrapper .top-wrapper .listing-info > :nth-child(-n + 3):nth-child(n + 1) {
+    border-bottom: 1px solid #cdd2d9;
+  }
+  .collection-detail-wrapper .top-wrapper .listing-info > :nth-child(-n + 2):nth-child(n + 1) {
+    border-right: 1px solid #cdd2d9;
+  }
+  .collection-detail-wrapper .top-wrapper .listing-info > :nth-child(-n + 5):nth-child(n + 4) {
+    border-right: 1px solid #cdd2d9;
+  }
+  .collection-detail-wrapper .top-wrapper .vertical-center {
+    flex: 33.3%;
+    height: 90px;
+  }
+}
+.collection-detail-wrapper .content-wrapper {
+  padding: 1% 0 0;
+  flex: 1;
+  height: 100%;
+}
+.collection-detail-wrapper .content-wrapper .transaction {
+  width: 100%;
+  height: 90px;
+  margin: 0 auto;
+  border-top: 1px solid #cdd2d9;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-horizontal {
+  line-height: 46px;
+  border: 0;
+  border-bottom: 1px solid #ffffff00 !important;
+  box-shadow: none;
+  justify-content: center;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu .ant-menu-submenu:hover:after {
+  border-bottom: 2px solid transparent !important;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item {
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #6d7278;
+  font-size: 16px;
+  padding: 0 0px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item::after {
+  display: none;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item:hover::after {
+  border-bottom: none;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item:hover a {
+  color: #000000 !important;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item-active {
+  font-weight: 600;
+  color: #000000 !important;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item-selected {
+  color: #000000 !important;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item-selected::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: #4338ca;
+  border-radius: 2px;
+  margin-left: -20px;
+  border-bottom: transparent;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item-selected a {
+  color: #000000 !important;
+}
+.collection-detail-wrapper .content-wrapper .ant-menu-item-selected a:active {
+  color: #000000 !important;
+}

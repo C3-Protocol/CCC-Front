@@ -8,6 +8,7 @@ export const idlFactory = ({ IDL }) => {
     'backGround' : IDL.Nat,
     'createUser' : IDL.Principal,
     'dimension' : IDL.Nat,
+    'bInvite' : IDL.Bool,
     'minDrawNum' : IDL.Nat,
     'wicpCanisterId' : IDL.Principal,
     'basePrice' : IDL.Nat,
@@ -30,8 +31,10 @@ export const idlFactory = ({ IDL }) => {
   const DrawResponse = IDL.Variant({
     'ok' : IDL.Bool,
     'err' : IDL.Variant({
+      'NotOpen' : IDL.Null,
       'NotAttachGapTime' : IDL.Null,
       'PositionError' : IDL.Null,
+      'NotBeInvite' : IDL.Null,
       'NFTDrawOver' : IDL.Null,
       'InsufficientBalance' : IDL.Null,
       'Unauthorized' : IDL.Null,
@@ -53,9 +56,29 @@ export const idlFactory = ({ IDL }) => {
     'basePrice' : IDL.Nat,
     'canisterId' : IDL.Principal,
   });
+  const HeaderField = IDL.Tuple(IDL.Text, IDL.Text);
+  const HttpRequest = IDL.Record({
+    'url' : IDL.Text,
+    'method' : IDL.Text,
+    'body' : IDL.Vec(IDL.Nat8),
+    'headers' : IDL.Vec(HeaderField),
+  });
+  const HttpResponse = IDL.Record({
+    'body' : IDL.Vec(IDL.Nat8),
+    'headers' : IDL.Vec(HeaderField),
+    'status_code' : IDL.Nat16,
+  });
   const AloneCanvas = IDL.Service({
+    'checkIfInvites' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
+    'checkImage' : IDL.Func([], [IDL.Bool], ['query']),
+    'deleteInviters' : IDL.Func([IDL.Vec(IDL.Principal)], [IDL.Bool], []),
     'drawOver' : IDL.Func([], [DrawOverResponse], []),
     'drawPixel' : IDL.Func([IDL.Vec(DrawPosRequest)], [DrawResponse], []),
+    'getAllConsume' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(IDL.Principal, IDL.Nat))],
+        ['query'],
+      ),
     'getAllPixel' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(Position, Color))],
@@ -65,7 +88,10 @@ export const idlFactory = ({ IDL }) => {
     'getCycles' : IDL.Func([], [IDL.Nat], ['query']),
     'getNftDesInfo' : IDL.Func([], [AloneNFTDesInfo], ['query']),
     'getWorth' : IDL.Func([], [IDL.Nat], ['query']),
+    'http_request' : IDL.Func([HttpRequest], [HttpResponse], ['query']),
+    'invitePainters' : IDL.Func([IDL.Vec(IDL.Principal)], [IDL.Bool], []),
     'isOver' : IDL.Func([], [IDL.Bool], ['query']),
+    'uploadImage' : IDL.Func([IDL.Vec(IDL.Nat8)], [IDL.Bool], []),
     'wallet_receive' : IDL.Func([], [IDL.Nat], []),
   });
   return AloneCanvas;
@@ -80,6 +106,7 @@ export const init = ({ IDL }) => {
     'backGround' : IDL.Nat,
     'createUser' : IDL.Principal,
     'dimension' : IDL.Nat,
+    'bInvite' : IDL.Bool,
     'minDrawNum' : IDL.Nat,
     'wicpCanisterId' : IDL.Principal,
     'basePrice' : IDL.Nat,

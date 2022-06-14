@@ -5,40 +5,18 @@ import { pxToRem } from '@/utils/utils'
 export const LoginContent = styled.div(
   ...pxToRem`
     align-items:center;
-    justify-content:center;
+    justify-content:flex-end;
     display:flex;
-    gap: 10px;
-    width: 190px;
+    margin-left: 10px;
+    column-gap: 20px;
     height: 44px;
-`
-)
-
-export const LoginButtonBg = styled.div(
-  ...pxToRem`
-    align-items:center;
-    justify-content:center;
-    display:flex;
-    width: 143px;
-    height: 44px;
-    border-radius:10px;
-    background: #000000;
-`
-)
-
-export const LoginImg = styled.img(
-  ...pxToRem`
-  width: auto;
-  height: 35px;
-`
-)
-
-export const LoginOutBg = styled.div(
-  ...pxToRem`
-  align-items:center;
-  justify-content:center;
-  display:flex;
-  padding: 7px;
-  border-radius:50%;
-  background-color:#f9ce0d;
+    
+    .picture {
+      width: 36px;
+      height: 36px;
+      margin-right: 10px;
+      background: #fff;
+      box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    }
 `
 )

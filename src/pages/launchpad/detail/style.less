@@ -1,0 +1,123 @@
+.mint-detail-wrapper {
+  width: 100%;
+  min-height: 100%;
+  background: #fff;
+  padding: 0px;
+  .go-back {
+    max-width: 1414px;
+    height: 56px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+  }
+  .top-wrapper {
+    max-width: 1414px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 40px;
+    margin: 0 auto;
+    .top-left {
+      flex: 1;
+      .title {
+        font-size: 48px;
+        font-weight: 800;
+        color: #000000;
+        line-height: 58px;
+      }
+      .line {
+        width: 100%;
+        align-items: end;
+        display: flex;
+        justify-content: space-between;
+      }
+
+      .link {
+        padding: 10px 0px;
+        border-radius: 4px;
+        border: 1px solid #cdd2d9;
+        display: flex;
+        a {
+          display: flex;
+          padding: 2px 14px;
+          &:not(a:last-child) {
+            border-right: 1px solid #cdd2d9;
+          }
+          &:hover {
+            path {
+              fill: #333;
+            }
+          }
+        }
+      }
+      .description {
+        margin-top: 20px;
+        width: 100%;
+        height: fit-content;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        p {
+          font-size: 16px;
+          font-family: Poppins-Medium, Poppins;
+          font-weight: 500;
+          color: #000000;
+          line-height: 26px;
+        }
+      }
+      .bottom-content {
+        width: 100%;
+        height: fit-content;
+        margin: 50px auto 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .coming-soon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-direction: column;
+          row-gap: 20px;
+        }
+      }
+    }
+    .top-right {
+      width: 634px;
+      height: fit-content;
+      background: #fbfbff;
+      border-radius: 10px;
+      border: 1px solid #cdd2d9;
+      overflow: hidden;
+      img {
+        width: 634px;
+        height: 634px;
+        image-rendering: pixelated;
+        object-fit: cover;
+      }
+      .progress-layout {
+        width: 100%;
+        height: fit-content;
+        padding: 25px 20px;
+      }
+    }
+  }
+  @media screen and (max-width: 1024px) {
+    padding-left: 10px;
+    padding-right: 10px;
+    .top-wrapper {
+      .top-left {
+        .bottom-content {
+          margin: 20px auto 0;
+        }
+      }
+      .top-right {
+        width: 98%;
+        img {
+          width: 100%;
+          height: fit-content;
+        }
+      }
+    }
+  }
+}

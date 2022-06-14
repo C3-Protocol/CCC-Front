@@ -1,0 +1,104 @@
+
+.create-on-chain-dailog {
+    .required-field {
+        &::before{
+            content: "*";
+            color: #f00;
+            margin-right: 10px;
+        }
+    }
+    .ant-form-item{
+        margin-bottom: 0px;
+        label{
+            font-size: 16px;
+            font-family: Poppins-Medium, Poppins;
+            font-weight: 500;
+            color: #000000;
+            line-height: 26px;
+        }
+        
+    }
+    .margin-10 {
+        margin-top: 10px;
+    }
+    .margin-25 {
+        margin-top: 25px;
+    }
+    .ant-input-number{
+        width: 100%;
+        border: none;
+        box-shadow: none;
+    }
+    .ant-input-number-group-wrapper{
+        border: 1px solid #CDD2D9;
+        width: 100% ;
+        border-radius: 8px;
+        &:hover,
+        &:focus{
+            border-color: #666666;
+        }
+        .ant-input-number {
+            width: 100%;
+            border-right: 0;
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+             &-handler-wrap {
+              display: none;
+            }
+        }
+        .ant-input-number-out-of-range input {
+            color: #999999;
+        }
+        .ant-input-number-group-addon {
+            background-color: transparent;
+            border: none;
+        }
+        input {
+            height: 50px;
+        }
+    
+    }
+    .divider {
+        height: 1px;
+        margin: 40px -24px;
+        background-color: #CDD2D9;
+    }
+    .flex-content {
+        display: flex;
+        column-gap: 20px;
+    }
+    .current-bg-color {
+        width: 100px;
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid #CDD2D9;
+    }
+    .current-bg-color-text{
+        width: 150px;
+        height: 50px;
+        border-radius: 8px;
+        border: 1px solid #CDD2D9;
+        font-size: 16px;
+        font-family: Poppins-Medium, Poppins;
+        font-weight: 500;
+        color: #000000;
+        line-height: 50px;
+        text-align: center;
+    }
+    .selected-color{
+        width: 52px;
+        height: 52px;
+        border: 1px solid #000;
+        border-radius: 50%;
+    }
+    .normal-color {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+    }
+    .white-bg-border {
+        border: 1px solid #CDD2D9;
+    }
+
+}

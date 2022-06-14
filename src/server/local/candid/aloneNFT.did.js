@@ -1,6 +1,11 @@
 export const idlFactory = ({ IDL }) => {
   const TokenIndex__1 = IDL.Nat;
   const TokenIndex = IDL.Nat;
+  const BuyRequest = IDL.Record({
+    'tokenIndex' : TokenIndex,
+    'marketFeeRatio' : IDL.Nat,
+    'feeTo' : IDL.Principal,
+  });
   const BuyResponse = IDL.Variant({
     'ok' : TokenIndex,
     'err' : IDL.Variant({
@@ -48,28 +53,17 @@ export const idlFactory = ({ IDL }) => {
     'settings' : CanisterSettings,
     'module_hash' : IDL.Opt(IDL.Vec(IDL.Nat8)),
   });
-  const Operation = IDL.Variant({
-    'Bid' : IDL.Null,
-    'List' : IDL.Null,
-    'Mint' : IDL.Null,
-    'Sale' : IDL.Null,
-    'CancelList' : IDL.Null,
-    'Transfer' : IDL.Null,
-    'UpdateList' : IDL.Null,
-  });
   const Time = IDL.Int;
-  const OpRecord = IDL.Record({
-    'op' : Operation,
-    'to' : IDL.Opt(IDL.Principal),
-    'from' : IDL.Opt(IDL.Principal),
-    'timestamp' : Time,
-    'price' : IDL.Opt(IDL.Nat),
-  });
   const Listings = IDL.Record({
     'tokenIndex' : TokenIndex,
     'time' : Time,
     'seller' : IDL.Principal,
     'price' : IDL.Nat,
+  });
+  const SoldListings = IDL.Record({
+    'lastPrice' : IDL.Nat,
+    'time' : Time,
+    'account' : IDL.Nat,
   });
   const ListRequest = IDL.Record({
     'tokenIndex' : TokenIndex,
@@ -90,7 +84,6 @@ export const idlFactory = ({ IDL }) => {
       'NotBeInvited' : IDL.Null,
       'InsufficientBalance' : IDL.Null,
       'InsufficientCycles' : IDL.Null,
-      'ExceedMaxNum' : IDL.Null,
       'Unauthorized' : IDL.Null,
       'Other' : IDL.Null,
       'LessThanFee' : IDL.Null,
@@ -109,12 +102,12 @@ export const idlFactory = ({ IDL }) => {
   const AloneNFT = IDL.Service({
     'approve' : IDL.Func([IDL.Principal, TokenIndex__1], [IDL.Bool], []),
     'balanceOf' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
-    'buyNow' : IDL.Func([TokenIndex__1], [BuyResponse], []),
+    'buyNow' : IDL.Func([BuyRequest], [BuyResponse], []),
     'cancelFavorite' : IDL.Func([CanvasIdentity], [IDL.Bool], []),
     'cancelList' : IDL.Func([TokenIndex__1], [ListResponse], []),
-    'getAllAloneCanvas' : IDL.Func(
-        [IDL.Principal],
-        [IDL.Vec(IDL.Tuple(TokenIndex__1, IDL.Principal))],
+    'getAllInvited' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(IDL.Principal, IDL.Nat))],
         ['query'],
       ),
     'getAllNFT' : IDL.Func(
@@ -132,14 +125,8 @@ export const idlFactory = ({ IDL }) => {
     'getCanvasStatus' : IDL.Func([IDL.Principal], [CanisterStatus], []),
     'getCreateCycles' : IDL.Func([], [IDL.Nat], ['query']),
     'getCycles' : IDL.Func([], [IDL.Nat], ['query']),
-    'getFavorite' : IDL.Func(
-        [IDL.Principal],
-        [IDL.Vec(CanvasIdentity)],
-        ['query'],
-      ),
     'getFeeTo' : IDL.Func([], [IDL.Principal], ['query']),
-    'getHistory' : IDL.Func([TokenIndex__1], [IDL.Vec(OpRecord)], ['query']),
-    'getInvited' : IDL.Func([IDL.Principal], [IDL.Bool], ['query']),
+    'getInvited' : IDL.Func([IDL.Principal], [IDL.Nat], ['query']),
     'getListings' : IDL.Func(
         [],
         [IDL.Vec(IDL.Tuple(CanvasIdentity, Listings))],
@@ -151,16 +138,17 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Opt(IDL.Principal)],
         ['query'],
       ),
-    'getNftFavoriteNum' : IDL.Func([TokenIndex__1], [IDL.Nat], ['query']),
     'getOwner' : IDL.Func([], [IDL.Principal], ['query']),
-    'getWICPCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
-    'isApprovedForAll' : IDL.Func(
-        [IDL.Principal, IDL.Principal],
-        [IDL.Bool],
+    'getSoldListings' : IDL.Func(
+        [],
+        [IDL.Vec(IDL.Tuple(CanvasIdentity, SoldListings))],
         ['query'],
       ),
-    'isFavorite' : IDL.Func(
-        [IDL.Principal, CanvasIdentity],
+    'getStorageCanisterId' : IDL.Func([], [IDL.Opt(IDL.Principal)], ['query']),
+    'getWICPCanisterId' : IDL.Func([], [IDL.Principal], ['query']),
+    'initRoyalty' : IDL.Func([], [IDL.Bool], []),
+    'isApprovedForAll' : IDL.Func(
+        [IDL.Principal, IDL.Principal],
         [IDL.Bool],
         ['query'],
       ),
@@ -171,6 +159,7 @@ export const idlFactory = ({ IDL }) => {
         [CreateCanvasResponse],
         [],
       ),
+    'newStorageCanister' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'ownerOf' : IDL.Func([TokenIndex__1], [IDL.Opt(IDL.Principal)], ['query']),
     'setAloneFee' : IDL.Func([IDL.Nat], [IDL.Bool], []),
     'setApprovalForAll' : IDL.Func([IDL.Principal, IDL.Bool], [IDL.Bool], []),
@@ -180,12 +169,15 @@ export const idlFactory = ({ IDL }) => {
     'setDimension' : IDL.Func([IDL.Nat], [IDL.Bool], []),
     'setFavorite' : IDL.Func([CanvasIdentity], [IDL.Bool], []),
     'setFeeTo' : IDL.Func([IDL.Principal], [IDL.Bool], []),
-    'setInvited' : IDL.Func([IDL.Principal, IDL.Bool], [IDL.Bool], []),
+    'setInvited' : IDL.Func([IDL.Vec(IDL.Principal)], [IDL.Bool], []),
     'setMarketFeeRatio' : IDL.Func([IDL.Nat], [IDL.Bool], []),
     'setMinDrawNum' : IDL.Func([IDL.Nat], [IDL.Bool], []),
     'setNftOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'setOpen' : IDL.Func([IDL.Bool], [IDL.Bool], []),
     'setOwner' : IDL.Func([IDL.Principal], [IDL.Bool], []),
+    'setParticipate' : IDL.Func([IDL.Vec(IDL.Principal)], [IDL.Bool], []),
+    'setRoyalty' : IDL.Func([TokenIndex__1, IDL.Nat], [IDL.Bool], []),
+    'setStorageCanisterId' : IDL.Func([IDL.Opt(IDL.Principal)], [IDL.Bool], []),
     'setWICPCanisterId' : IDL.Func([IDL.Principal], [IDL.Bool], []),
     'transferFrom' : IDL.Func(
         [IDL.Principal, IDL.Principal, TokenIndex__1],

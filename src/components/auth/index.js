@@ -1,26 +1,27 @@
-import React, { useEffect } from 'react'
-import { Popover, Button, Typography } from 'antd'
-import { principalToAccountId } from '@/utils/utils'
-import Dfinity from '@/assets/images/dfinity.png'
-import Plug from '@/assets/images/plug.svg'
-import LoginOut from '@/assets/images/login_out.png'
-import { LoginContent, LoginButtonBg, LoginImg, LoginOutBg } from './style'
-import { DFINITY_TYPE, PLUG_TYPE } from '../../constants'
-import { Principal } from '@dfinity/principal'
-import { isPhone } from '@/utils/utils'
+import React, { useEffect, useState } from 'react'
+import { LoginContent } from './style'
+import { isAuthTokenEffect, isCollapsed } from '@/utils/utils'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
-import { requestInitLoginStates, requestLogin, requestLoginOut } from './store/actions'
-import { memo } from 'react'
-
-const { Paragraph } = Typography
+import { requestLogin, requestLoginOut, requestUserProfile, requestUserAvatar } from './store/actions'
+import DefaultAvator from '@/assets/images/wallet/avator.png'
+import { useHistory, withRouter } from 'react-router-dom'
+import { Avatar, Popover, List, Image } from 'antd'
+import { WalletIcon, CollectedIcon, CreateIcon, StakeIcon, DrewIcon, FavoriteIcon, LogoutIcon } from '../../icons'
+import AuthDrawer from './cpns/auth-drawer'
 
 const Auth = React.memo((props) => {
   const dispatch = useDispatch()
-
-  const { isAuth, authToken } = useSelector((state) => {
+  const history = useHistory()
+  const pathName = props.history.location.pathname
+  const [loginType, setLoginType] = useState(null)
+  const [popoverVisible, setPopVisible] = useState(false)
+  const { isAuth, authToken, profile, avatar } = useSelector((state) => {
+    let authToken = state.auth.getIn(['authToken']) || ''
     return {
       isAuth: state.auth.getIn(['isAuth']) || false,
-      authToken: state.auth.getIn(['authToken']) || ''
+      authToken: authToken,
+      profile: (authToken && state.auth.getIn([`profile-${authToken}`])) || null,
+      avatar: (authToken && state.auth.getIn([`avatar-${authToken}`])) || null
     }
   }, shallowEqual)
 
@@ -29,51 +30,107 @@ const Auth = React.memo((props) => {
   }
 
   const handleLogin = async (type) => {
-    dispatch(requestLogin(type))
+    if (loginType === type) {
+      return
+    }
+    setLoginType(type)
+    dispatch(
+      requestLogin(type, (res) => {
+        if (res.error === 'noplug') {
+          window.open('https://plugwallet.ooo/', '_blank')
+        } else if (res.error === 'noinfinity') {
+          window.open('https://app.infinityswap.one/', '_blank')
+        }
+        setLoginType(null)
+      })
+    )
   }
 
+  useEffect(() => {
+    if (!avatar && profile && profile.avatorCID) {
+      dispatch(requestUserAvatar(profile.avatorCID, authToken))
+    }
+  }, [profile])
+
+  useEffect(() => {
+    if (!profile && isAuthTokenEffect(isAuth, authToken)) {
+      dispatch(requestUserProfile(authToken))
+    }
+    if (isAuth) {
+      setLoginType(null)
+    }
+  }, [isAuth, authToken, profile])
+
+  const goToAssetByType = (key) => {
+    if (!isAuth) {
+      if (pathName !== key) history.push('/assets/auth')
+    } else {
+      if (pathName !== key) history.push(key)
+    }
+  }
+  const menu = [
+    { func: goToAssetByType, key: '/assets/wallet/myarts', title: 'Collected', icon: CollectedIcon },
+    { func: goToAssetByType, key: '/assets/wallet/createCollections', title: 'Create', icon: CreateIcon },
+    { func: goToAssetByType, key: '/assets/wallet/staking', title: 'Staking', icon: StakeIcon },
+    { func: goToAssetByType, key: '/assets/wallet/drew', title: 'Drew', icon: DrewIcon },
+    { func: goToAssetByType, key: '/assets/wallet/favorites', title: 'Favorites', icon: FavoriteIcon },
+    { func: goToAssetByType, key: '/assets/wallet/transaction', title: 'Transaction record', icon: WalletIcon },
+    { func: handleLogout, key: '', title: 'Logout', icon: LogoutIcon }
+  ]
+
+  const handleVisibleChange = (visible) => {
+    setPopVisible(visible)
+  }
   return (
     <>
-      {isAuth && authToken && authToken !== '2vxsx-fae' ? (
-        <LoginContent>
-          <Popover
-            placement="bottomRight"
-            content={
-              <div>
-                Principal: <Paragraph copyable>{authToken}</Paragraph>
-                Account ID: <Paragraph copyable>{principalToAccountId(Principal.fromText(authToken))}</Paragraph>
-              </div>
-            }
-            trigger="click"
-          >
-            <Button type="yellow15">{authToken.slice(0, 10)}...</Button>
-          </Popover>
-          <LoginOutBg onClick={handleLogout}>
-            <img src={LoginOut}></img>
-          </LoginOutBg>
-        </LoginContent>
-      ) : (
-        <LoginContent>
-          <LoginButtonBg
-            onClick={() => {
-              handleLogin(DFINITY_TYPE)
-            }}
-          >
-            <LoginImg src={Dfinity}></LoginImg>
-          </LoginButtonBg>
-          {!isPhone() && (
-            <LoginButtonBg
-              onClick={() => {
-                handleLogin(PLUG_TYPE)
-              }}
+      <LoginContent>
+        {!isCollapsed() &&
+          (isAuth ? (
+            <Popover
+              style={{ width: '200px' }}
+              placement="bottomRight"
+              visible={popoverVisible}
+              onVisibleChange={handleVisibleChange}
+              content={
+                <List
+                  bordered={false}
+                  dataSource={menu}
+                  renderItem={(item) => (
+                    <List.Item
+                      key={item.title}
+                      onClick={() => {
+                        item.func(item.key)
+                        setPopVisible(false)
+                      }}
+                    >
+                      <div className="flex-10 ">
+                        {item.icon}
+                        {item.title}
+                      </div>
+                    </List.Item>
+                  )}
+                />
+              }
             >
-              <LoginImg src={Plug}></LoginImg>
-            </LoginButtonBg>
-          )}
-        </LoginContent>
-      )}
+              <Avatar
+                src={avatar || DefaultAvator}
+                className="picture"
+                onClick={() => goToAssetByType('/assets/wallet/myarts')}
+                style={{ cursor: 'pointer' }}
+              />
+            </Popover>
+          ) : (
+            <Avatar
+              src={avatar || DefaultAvator}
+              className="picture"
+              onClick={() => goToAssetByType('/assets/auth')}
+              style={{ cursor: 'pointer' }}
+            />
+          ))}
+        <AuthDrawer zIndex={props.zIndex} />
+      </LoginContent>
     </>
   )
 })
 
-export default memo(Auth)
+export default withRouter(Auth)

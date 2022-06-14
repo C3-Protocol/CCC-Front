@@ -42,20 +42,32 @@ export const ToastBoxWrapper = styled.div(
 
 export const ToastIconWrapper = styled.div(
   ...pxToRem`
-    padding-top: 69px;
     width: 100%;
     display: flex;
     justify-content:center;
     align-items:center;
+    img {
+      width: 90%;
+    }
 `
 )
 
 export const ToastTextWrapper = styled.div(
   ...pxToRem`
-    padding-top:34px;
     width: 100%;
     color: ${(props) => props.textColor};
-    text-align:center;
+    height: fit-content;
+    display: flex;
+    justify-content:center;
     font-size: 20px;
+    .pot1{
+      visibility: ${(props) => (props.count > 0 ? 'visible' : 'hidden')};
+    }
+    .pot2{
+      visibility: ${(props) => (props.count > 1 ? 'visible' : 'hidden')};
+    }
+    .pot3{
+      visibility: ${(props) => (props.count > 2 ? 'visible' : 'hidden')};
+    }
 `
 )

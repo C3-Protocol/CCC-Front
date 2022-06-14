@@ -98,7 +98,7 @@ function SelectFrame(props) {
             position: 'absolute',
             width: selectWidth + 'px',
             height: selectFrameTop + 'px',
-            backgroundColor: '#00000033',
+            backgroundColor: '#00000099',
             left: 0,
             top: 0
           }}
@@ -110,7 +110,7 @@ function SelectFrame(props) {
             position: 'absolute',
             width: selectWidth + 'px',
             height: selectHeight - selectFrameTop - frameH + 'px',
-            backgroundColor: '#00000033',
+            backgroundColor: '#00000099',
             left: 0,
             top: selectFrameTop + frameH + 'px'
           }}
@@ -122,7 +122,7 @@ function SelectFrame(props) {
             position: 'absolute',
             width: selectFrameLeft + 'px',
             height: frameH + 'px',
-            backgroundColor: '#00000033',
+            backgroundColor: '#00000099',
             left: 0,
             top: selectFrameTop + 'px'
           }}
@@ -135,7 +135,7 @@ function SelectFrame(props) {
             position: 'absolute',
             width: selectWidth - selectFrameLeft - frameW + 'px',
             height: frameH + 'px',
-            backgroundColor: '#00000033',
+            backgroundColor: '#00000099',
             left: selectFrameLeft + frameW,
             top: selectFrameTop + 'px'
           }}

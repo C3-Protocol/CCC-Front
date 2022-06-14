@@ -1,0 +1,163 @@
+@import '@/assets/style/var.less';
+.side-wallet-wrapper {
+  h4 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    line-height: 28px;
+  }
+  .balance-item {
+    border-radius: 4px;
+    border: 1px solid #c1c1c1;
+    position: relative;
+    padding: 15px;
+    row-gap: 10px;
+
+    .balance {
+      display: flex;
+      align-items: center;
+      column-gap: 10px;
+    }
+    .sub-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      span {
+        font-size: 24px;
+        font-weight: 600;
+        color: #000;
+        line-height: 33px;
+      }
+    }
+
+    .sub-item2 {
+      display: flex;
+      align-items: baseline;
+      margin-top: 10px;
+
+      .ant-form-item {
+        margin-bottom: 0px;
+        flex: 1;
+      }
+      .ant-input-number {
+        width: 100%;
+        height: 40px;
+        background: transparent;
+        border-radius: 4px;
+        border: none;
+        font-size: 16px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 22px;
+        &:focus,
+        &-focused {
+          border-color: @primary-color;
+          box-shadow: 0px 0px 2px 0px rgba(67, 56, 202, 1);
+        }
+        &-input {
+          height: 40px;
+        }
+        &-handler-wrap {
+          display: none;
+        }
+      }
+      .ant-input-number-out-of-range input {
+        color: #999999;
+      }
+      p {
+        flex: 1;
+        text-align: right;
+        font-size: 16px;
+        font-weight: 400;
+        color: #999999;
+        line-height: 22px;
+      }
+    }
+    .slider-layout {
+      border-top: 1px solid #c1c1c1;
+      margin: 0px -15px;
+      padding: 10px 15px 0px;
+      .ant-form-item {
+        margin-bottom: 10px;
+      }
+    }
+    .ant-slider-rail {
+      background-color: #a6a6a6;
+    }
+    .ant-slider-track {
+      background-color: @primary-color;
+    }
+    .ant-slider-dot {
+      background-color: #a6a6a6;
+      border: 0;
+    }
+    .ant-slider-handle {
+      border: 0;
+      background: @primary-color;
+    }
+    .ant-slider-handle.ant-tooltip-open {
+      border: 0;
+      background: @primary-color;
+    }
+
+    .ant-slider-with-marks {
+      margin-bottom: 0px;
+    }
+  }
+  .balance-transfer {
+    width: 42px;
+    height: 42px;
+    margin: -15px auto;
+    padding: 6px;
+    background: @primary-color;
+    border: 4px solid #f4f3ff;
+    position: relative;
+    z-index: 1;
+    border-radius: 50%;
+    img {
+      height: 24px;
+    }
+  }
+
+  .wrapp_button {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .icp-wicp-transfer {
+    .fee-actually {
+      text-align: right;
+      margin-bottom: 16px;
+      span {
+        padding-left: 10px;
+        color: #666;
+      }
+    }
+  }
+  .refresh {
+    width: 23px;
+    height: 23px;
+    display: flex;
+    align-items: center;
+  }
+  .turn {
+    animation: turn 1s linear infinite;
+  }
+  @keyframes turn {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    25% {
+      -webkit-transform: rotate(90deg);
+    }
+    50% {
+      -webkit-transform: rotate(180deg);
+    }
+    75% {
+      -webkit-transform: rotate(270deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+}

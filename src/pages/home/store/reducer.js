@@ -1,5 +1,4 @@
 import { Map } from 'immutable'
-import * as constants from './constants'
 
 // 使用Immutable管理redux中的state (修改的`state`不会修改原有数据结构, 而是返回修改后新的数据结构)
 const defaultState = Map({
@@ -11,8 +10,9 @@ const defaultState = Map({
 
 function reducer(state = defaultState, action) {
   if (action.type) {
-    return state.set(action.type, action.value)
+    if (action.nameSpace === 'nfts') return state.set(action.type, action.value)
   }
+  return state
 }
 
 export default reducer

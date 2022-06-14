@@ -1,0 +1,88 @@
+.wicp-wrapper {
+  display: flex;
+  column-gap: 6px;
+  align-items: center;
+}
+
+.value-20 {
+  font-family: Poppins-SemiBold, Poppins;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 28px;
+  color: #333;
+}
+
+.value-red-20 {
+  font-family: Poppins-SemiBold, Poppins;
+  font-size: 20px;
+  font-weight: 500;
+  color: #e02020;
+  line-height: 28px;
+}
+
+.value-14 {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: #000000;
+}
+
+.value-14-violet {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 21px;
+  color: #4338ca;
+}
+
+.value-16 {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  color: #000000;
+}
+
+.value-30 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 42px;
+}
+
+.value-white-30 {
+  font-size: 30px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 42px;
+}
+
+.value-white-25 {
+  font-size: 25px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 36px;
+}
+
+.value-32 {
+  font-size: 32px;
+  font-weight: 500;
+  color: #000000;
+  line-height: 48px;
+}
+
+.value-white-32 {
+  font-size: 32px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 48px;
+}
+
+.value-48 {
+  font-size: 48px;
+  font-weight: 600;
+  color: #000000;
+  line-height: 67px;
+}
+
+.hidden {
+  visibility: hidden;
+}

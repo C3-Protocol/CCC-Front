@@ -6,6 +6,15 @@ import crc32 from 'crc-32'
 import { sha224 } from 'js-sha256'
 import { css } from 'styled-components'
 import BigNumber from 'bignumber.js'
+import {
+  AloneCreate,
+  CrowdCreate,
+  ThemeCreate,
+  M1155Create,
+  Theme1155Create,
+  ZombieNFTCreate,
+  gangNFTCreate
+} from '../constants'
 
 const to32bits = (num) => {
   let b = new ArrayBuffer(4)
@@ -55,34 +64,22 @@ const bignumberToBigInt = (num) => {
   return BigInt(bignumberFormat(num))
 }
 
+const base64toBuff = (data) => {
+  var arr = data.split(',')
+  var buffer = Buffer.from(arr[1], 'base64')
+  // new Blob(buffer)
+  let array = new Uint8Array(buffer, 0, buffer.length)
+  return Array.from(array)
+}
+
 const uint8arrayToBase64 = (buffer) => {
-  // case 1
-  // web image base64图片格式: "data:image/png;base64," + b64encoded;
-  // return  "data:image/png;base64," + btoa(result);
-
-  // var binary = ''
-  // var bytes = new Uint8Array(buffer)
-  // var len = bytes.byteLength
-  // for (var i = 0; i < len; i++) {
-  //   binary += String.fromCharCode(bytes[i])
-  // }
-  // return `data:image/png;base64,${window.btoa(binary)}`
-
-  // case 2
-  if (!buffer || !buffer.length) {
-    return
+  var binary = ''
+  var bytes = new Uint8Array(buffer)
+  var len = bytes.byteLength
+  for (var i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i])
   }
-  try {
-    let view = new Uint8Array(new ArrayBuffer(buffer.length))
-    for (let i = 0; i < view.length; i++) {
-      view[i] = buffer[i]
-    }
-    let dec = new TextDecoder('utf-8')
-    let dataStr = dec.decode(view)
-    return dataStr
-  } catch (e) {
-    console.log('uint8arrayToBase64 e:', e)
-  }
+  return `data:image/png;base64,${window.btoa(binary)}`
 }
 
 const gData = {
@@ -168,12 +165,22 @@ const fromatLeftTime = (lastUpdate) => {
 }
 
 const getValueDivide8 = (num) => {
-  let res = new BigNumber(parseInt(num || 0)).dividedBy(Math.pow(10, 8))
+  let res = new BigNumber(num || 0).dividedBy(Math.pow(10, 8))
   return res.toFixed()
 }
 
 const getValueMultiplied8 = (num) => {
   let res = new BigNumber(parseFloat(num || 0)).multipliedBy(Math.pow(10, 8))
+  return res
+}
+
+const multiBigNumber = (num1, num2) => {
+  let res = new BigNumber(num1).multipliedBy(num2)
+  return res
+}
+
+const plusBigNumber = (num1, num2) => {
+  let res = new BigNumber(num1).plus(num2)
   return res
 }
 
@@ -221,7 +228,7 @@ const padLeftZero = (str) => {
 
 const formatMinuteSecond = (time, exchange, easy) => {
   let res = exchange ? parseInt(new BigNumber(parseInt(time || 0)).dividedBy(Math.pow(10, 6))) : time
-  return formatDate(res, 'YY-MM-dd hh:mm', easy)
+  return formatDate(res, 'YY/MM/dd hh:mm', easy)
 }
 
 const handleScrollTop = (el) => {
@@ -253,28 +260,6 @@ const scrollAnimation = (currentY, targetY) => {
       window.scrollTo(_currentY, targetY)
     }
   }, 1)
-}
-
-const compareArray = (array1, array2) => {
-  if (
-    array1 &&
-    typeof array1 === 'object' &&
-    array1.constructor === Array &&
-    array2 &&
-    typeof array2 === 'object' &&
-    array2.constructor === Array
-  ) {
-    if (array1.length == array2.length) {
-      for (var i = 0; i < array1.length; i++) {
-        if (array1[i] !== array2[i]) {
-          return false
-        }
-      }
-    } else {
-      return false
-    }
-  }
-  return true
 }
 
 const getDeviceInfo = () => {
@@ -320,6 +305,85 @@ const isCollapsed = () => {
   return window.innerWidth < 1024
 }
 
+const isAuthTokenEffect = (isAuth, authToken) => {
+  return isAuth && authToken && authToken !== '2vxsx-fae'
+}
+
+const getIndexPrefix = (type, tokenIndex) => {
+  let prefix
+  if (type === AloneCreate) prefix = `#A-${tokenIndex}`
+  if (type === CrowdCreate || type === M1155Create) prefix = `#M-${tokenIndex}`
+  if (type === ThemeCreate || type === Theme1155Create) prefix = `#T-${tokenIndex}`
+  return prefix
+}
+
+const getZombieCanister = (index, type = ZombieNFTCreate) => {
+  if (type === ZombieNFTCreate) {
+    if (index < 1000) return 'h6zkn-2aaaa-aaaah-qciaa-cai'
+    else if (index < 2000) return 'hzymz-xyaaa-aaaah-qciaq-cai'
+    else if (index < 3000) return 'hq3hf-bqaaa-aaaah-qciba-cai'
+    else if (index < 4000) return 'hx2br-miaaa-aaaah-qcibq-cai'
+    else if (index < 5000) return 'hc5q4-naaaa-aaaah-qcica-cai'
+  } else if (type === gangNFTCreate) {
+    return 'v4oyv-zaaaa-aaaah-qctya-cai'
+  }
+}
+
+const is1155Canvas = (type) => {
+  return type === M1155Create || type === Theme1155Create
+}
+
+const getUTCTime = (time, fmt = 'MM/dd hh:mm UTC') => {
+  var today = new Date(time)
+  var utc = today.getTime() + today.getTimezoneOffset() * 60000
+  var utcDate = new Date(utc)
+  if (/(y+)/.test(fmt)) {
+    fmt = fmt.replace(RegExp.$1, (date.getFullYear() + '').substr(4 - RegExp.$1.length))
+  }
+  let o = {
+    'Y+': utcDate.getFullYear(),
+    'M+': utcDate.getMonth() + 1,
+    'd+': utcDate.getDate(),
+    'h+': utcDate.getHours(),
+    'm+': utcDate.getMinutes(),
+    's+': utcDate.getSeconds()
+  }
+  for (let k in o) {
+    if (new RegExp(`(${k})`).test(fmt)) {
+      let str = o[k] + ''
+      fmt = fmt.replace(RegExp.$1, RegExp.$1.length === 1 ? str : padLeftZero(str))
+    }
+  }
+  return fmt
+}
+
+const getItemImageUrl = (type, prinId, tokenIndex) => {
+  if (type === 'avocado' || type === ZombieNFTCreate || type === 'lion') {
+    return `https://${prinId}.raw.ic0.app/thumbnail/${tokenIndex}`
+  }
+  return `https://${prinId}.raw.ic0.app/token/${tokenIndex}`
+}
+
+//every nft get isopen status will cost 1000ms+, weather detailUrl is video link will  cost 600ms+,so
+const isBlindBoxUrl = (type, imgUrl, detailUrl) => {
+  if (
+    type === 'kverso' &&
+    imgUrl === 'https://gateway.filedrive.io/ipfs/QmaGxeHtX8A21qNBPxzq55MZ6xbrABwCwrmSpjqQwqcVGs' &&
+    detailUrl === 'https://gateway.filedrive.io/ipfs/QmdEBKCUDTGok2ceMvabT3VEMyQdcX4LwWscS29wPJ1kVm'
+  ) {
+    return true
+  }
+  return false
+}
+
+const getIPFSLink = (value) => {
+  if (!value) return
+  if (value.startsWith('https://')) {
+    return value
+  }
+  return `https://gateway.filedrive.io/ipfs/${value}`
+}
+
 export {
   Storage,
   principalToAccountId,
@@ -338,8 +402,18 @@ export {
   getValueMultiplied8,
   handleScrollTop,
   scrollAnimation,
-  compareArray,
   isPhone,
   isCollapsed,
-  deepCopy
+  deepCopy,
+  isAuthTokenEffect,
+  multiBigNumber,
+  plusBigNumber,
+  getIndexPrefix,
+  getZombieCanister,
+  base64toBuff,
+  is1155Canvas,
+  getUTCTime,
+  getItemImageUrl,
+  isBlindBoxUrl,
+  getIPFSLink
 }

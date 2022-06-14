@@ -1,16 +1,22 @@
-import mywallet from '@/assets/images/wallet/my_wallet.png'
-import drew from '@/assets/images/wallet/drew.png'
-import offers from '@/assets/images/wallet/offers.png'
-import favorite from '@/assets/images/wallet/favorite.png'
 const PhoneMenuConfig = [
   {
-    title: 'Canvas Gallery',
+    title: '',
     key: '/all',
     icon: ''
   },
   {
-    title: 'MarketPlace',
+    title: 'Explore',
     key: '/marketplace',
+    icon: ''
+  },
+  {
+    title: 'Launchpad',
+    key: '/launchpad',
+    icon: ''
+  },
+  {
+    title: 'AirDrop',
+    key: '/airdrop',
     icon: ''
   },
   {
@@ -19,34 +25,45 @@ const PhoneMenuConfig = [
     icon: ''
   },
   {
-    title: 'Wallet',
+    title: 'Assets',
     key: '/wallet',
     icon: '',
     children: [
       {
-        title: 'My Wallet',
-        key: '/wallet/mywallet',
-        icon: mywallet,
-        type: 'pink'
+        title: 'Collected',
+        key: '/assets/wallet/myarts'
+      },
+      {
+        title: 'Create',
+        key: '/createItems',
+        children: [
+          {
+            title: 'Collections',
+            key: '/assets/wallet/createCollections'
+          },
+          {
+            title: 'Items',
+            key: '/assets/wallet/createItems'
+          }
+        ]
+      },
+      {
+        title: 'Staking',
+        key: '/assets/wallet/staking'
       },
       {
         title: 'Drew',
-        key: '/wallet/drew',
-        icon: drew,
-        type: 'yellow'
+        key: '/assets/wallet/drew'
       },
       {
         title: 'Favorites',
-        key: '/wallet/favorites',
-        icon: favorite,
-        type: 'red'
+        key: '/assets/wallet/favorites'
+      },
+      {
+        title: 'Transaction Record',
+        key: '/assets/wallet/transaction'
       }
     ]
-  },
-  {
-    title: 'Rules',
-    key: '/rule',
-    icon: ''
   }
 ]
 

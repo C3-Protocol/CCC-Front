@@ -1,0 +1,76 @@
+.mint-list-content {
+  width: 100%;
+  background: #ffffff;
+  padding-bottom: 10px;
+
+  .content {
+    width: 100%;
+    min-height: 50px;
+
+    .mint-tip {
+      width: fit-content;
+      font-size: 12px;
+      font-weight: 400;
+      color: #000000;
+      line-height: 16px;
+      margin-bottom: 10px;
+
+      span {
+        font-size: 14px;
+        font-weight: 400;
+        color: #e02020;
+        line-height: 20px;
+      }
+    }
+
+    .mint-container {
+      display: grid;
+      width: 100%;
+      grid-template-columns: repeat(auto-fill, calc(25% - 15px));
+      column-gap: 20px;
+      row-gap: 10px;
+
+      .mint-item {
+        height: 90px;
+        border-radius: 6px;
+        background: #f3f3f3;
+        border: 1px solid #cdd2d9;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        row-gap: 5px;
+        .nft-count {
+          font-size: 16px;
+          font-weight: 600;
+          color: #6d7278;
+          line-height: 28px;
+        }
+        &-selected {
+          background: linear-gradient(226deg, #4338ca 0%, #000000 100%);
+          .nft-count {
+            color: #eeeeee;
+          }
+        }
+      }
+    }
+
+    .total {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      column-gap: 5px;
+      font-size: 16px;
+      font-weight: 400;
+      color: #999999;
+      line-height: 22px;
+      margin-bottom: 10px;
+    }
+
+    .button-layout {
+      display: flex;
+      justify-content: center;
+      margin-top: 100px;
+    }
+  }
+}

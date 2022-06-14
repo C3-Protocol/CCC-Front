@@ -45,6 +45,12 @@ export const CreateItemWrapper = styled.div(
         align-items:center;
     }
 
+    &:hover {
+      cursor: pointer;
+      transform: translateY(-4px);
+      box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    }
+
     @media screen and (max-width: 1152px) {
       width: 300px;
       height: 300px;

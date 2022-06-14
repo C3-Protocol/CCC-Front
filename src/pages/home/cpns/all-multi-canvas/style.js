@@ -5,7 +5,7 @@ import { pxToRem } from '@/utils/utils'
 export const MultiContentWrapper = styled.div(
   ...pxToRem`
   width:100%;
-  background-image: linear-gradient(to top, #fff, rgba(208, 234, 255, 1), rgba(252, 240, 255, 1), #fff);
+  background: #ffffff;
 
 `
 )
@@ -13,11 +13,11 @@ export const MultiContentWrapper = styled.div(
 export const MultiListWrapper = styled.div(
   ...pxToRem`
   margin-top: 6px;
-  width:100%;
-  padding-left: 2%;
-  padding-right:2%;
+  max-width: 1530px;
+  margin: 0 auto;
+  
   .aloneBg {
-    padding: 100px 0;
+    padding: 100px 0 0 ;
   }
   .title{
     color:#000000;
@@ -26,57 +26,50 @@ export const MultiListWrapper = styled.div(
     font-weight: bold;
     margin-bottom: 100px;
   }
+
   .multi-list {
     display: flex;
     flex-wrap: wrap;
     margin-top: 20px;
-  }
-
-  .multi-done-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 780px);
     justify-content: center;
-    gap: 100px;
-    margin-top: 20px;
+    column-gap: 10px;
+    row-gap: 10px;
   }
 
   .market-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, 680px);
-    justify-content: center;
-    gap: 100px;
-    margin-top: 20px;
+    width: 100%;
+    display: flex;
+    flex: 1 1 360px;
+    column-gap: 10px;
+    overflow-x: scroll;
+    padding: 30px;
   }
+
+  .market-list::-webkit-scrollbar {
+    display: none;
+  }
+
   .more {
     float: right;
     margin-right: 40px;
-
     a {
       font-size: 22px;
-      color: #F9CE0D !important;
+      color: #4338ca !important;
     }
   }
 
   @media screen and (max-width: 1152px) {
+    padding-left: 2%;
+    padding-right:2%;
     .title {
       margin-bottom: 40px;
     }
     .aloneBg {
       padding: 50px 0 0;
     }
-    .multi-done-list {
-      min-width: 100%;
-      display: -webkit-box;
-      overflow-x: scroll;
-      gap: 0px;
-    }
     .market-list {
-      min-width: 100%;
-      display: -webkit-box;
-      overflow-x: scroll;
-      gap: 0px;
+      padding: 0px;
     }
-    
   }
 `
 )

@@ -1,0 +1,225 @@
+html {
+  width: 100%;
+  height: 100%;
+}
+code {
+  font-family: Poppins, sans-serif;
+}
+@font-face {
+  font-family: 'Barlow-ExtraBold';
+  src: url('@/assets/font/Barlow-Extra-Bold.ttf');
+}
+@font-face {
+  font-family: 'DIN-AlternateBold';
+  src: url('@/assets/font/DIN-Alternate-Bold.ttf');
+}
+@font-face {
+  font-family: 'Trebuchet-MSBold';
+  src: url('@/assets/font/Trebuchet-MS-Bold.ttf');
+}
+@font-face {
+  font-family: 'Trebuchet-MS';
+  src: url('@/assets/font/Trebuchet-MS.ttf');
+}
+@font-face {
+  font-family: 'Poppins-Bold';
+  src: url('@/assets/font/poppins/Poppins-Bold.ttf');
+}
+@font-face {
+  font-family: 'Poppins-Light';
+  src: url('@/assets/font/poppins/Poppins-Light.ttf');
+}
+@font-face {
+  font-family: 'Poppins-Medium';
+  src: url('@/assets/font/poppins/Poppins-Medium.ttf');
+}
+@font-face {
+  font-family: 'Poppins-Regular';
+  src: url('@/assets/font/poppins/Poppins-Regular.ttf');
+}
+@font-face {
+  font-family: 'Poppins-SemiBold';
+  src: url('@/assets/font/poppins/Poppins-SemiBold.ttf');
+}
+body {
+  margin: 0;
+  font-family: Poppins, sans-serif, Poppins-Bold, Poppins-Light, Poppins-Medium, Poppins-Regular, Poppins-SemiBold, BlinkMacSystemFont, 'Trebuchet-MS', 'Trebuchet-MSBold', 'Barlow-ExtraBold', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+.ant-pagination-item {
+  border: 1px solid #a6aeb7;
+  border-radius: 18px;
+}
+.ant-pagination-item:focus {
+  color: #fff;
+}
+.ant-pagination-item a {
+  padding: 0;
+}
+.ant-pagination-item-link {
+  border-radius: 18px !important;
+  border: none;
+  font-size: 14px;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #a6aeb7;
+  line-height: 23px;
+}
+.ant-pagination-prev,
+.ant-pagination-next {
+  font-size: 14px;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+  color: #a6aeb7;
+  line-height: 23px;
+}
+.ant-pagination-prev:hover svg,
+.ant-pagination-next:hover svg {
+  color: #a6aeb7 !important;
+}
+.ant-pagination-item-active {
+  background: linear-gradient(234deg, #4338ca 0%, #000000 100%);
+  font-size: 14px;
+  font-family: Poppins-Regular, Poppins;
+  font-weight: 400;
+}
+.ant-pagination-item-active:hover {
+  color: #ffffff !important;
+}
+.ant-pagination-item-active a {
+  color: #ffffff !important;
+}
+.ant-pagination-item-active a:hover {
+  color: #ffffff !important;
+}
+.ccc-dropdown {
+  font-family: Poppins-SemiBold, Poppins;
+}
+.ccc-dropdown .menu-arrow {
+  width: 19px;
+  height: 10px;
+}
+.ccc-drop-menu {
+  background: #ffffff;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  padding: 0px;
+}
+.ccc-drop-menu .ant-dropdown-menu {
+  border-radius: 8px;
+}
+.ccc-drop-menu .ant-dropdown-menu-item {
+  font-family: Poppins-Medium, Poppins;
+  height: 50px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000000;
+  line-height: 26px;
+}
+.ccc-drop-menu .ant-dropdown-menu-item-divider {
+  margin: 0;
+}
+.popover-menu {
+  font-size: 16px;
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #000000;
+}
+.ccc-menuConfig-horizontal .ant-menu-horizontal {
+  line-height: 46px;
+  border: 0;
+  border-bottom: 1px solid #ffffff00 !important;
+  box-shadow: none;
+  justify-content: center;
+}
+.ccc-menuConfig-horizontal .ant-menu .ant-menu-submenu:hover:after {
+  border-bottom: 2px solid transparent !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item {
+  font-family: Poppins-Medium, Poppins;
+  font-weight: 500;
+  color: #6d7278 !important;
+  font-size: 16px;
+  padding: 0 0px !important;
+  margin-left: 20px !important;
+  margin-right: 20px !important;
+  border-bottom: transparent !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item::after {
+  display: none;
+}
+.ccc-menuConfig-horizontal .ant-menu-item:hover::after {
+  border-bottom: none;
+}
+.ccc-menuConfig-horizontal .ant-menu-item:hover a {
+  color: #000000 !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item-active {
+  font-weight: 600;
+  color: #000000 !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item-selected {
+  color: #000000 !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item-selected::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 4px;
+  background: #4338ca;
+  border-radius: 2px;
+  margin-left: -20px;
+  border-bottom: transparent !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item-selected a {
+  color: #000000 !important;
+}
+.ccc-menuConfig-horizontal .ant-menu-item-selected a:active {
+  color: #000000 !important;
+}
+.ccc-confirm-btn {
+  font-size: 16px !important;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  color: #000000;
+  line-height: 26px;
+  height: 50px !important;
+  min-width: 158px !important;
+  background: #000000 !important;
+  border-radius: 10px !important;
+  color: #ffffff !important;
+}
+.ccc-confirm-btn:hover {
+  background: #000000 !important;
+  border-radius: 10px !important;
+  border: transparent !important;
+  color: #ffffff !important;
+}
+.ccc-cancel-btn {
+  font-size: 16px !important;
+  font-family: Poppins-SemiBold, Poppins;
+  font-weight: 600;
+  height: 50px;
+  color: #000000;
+  line-height: 26px;
+  height: 50px !important;
+  min-width: 158px !important;
+  background: #ffffff !important;
+  border-radius: 10px !important;
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+}
+.ccc-cancel-btn:hover {
+  background: #ffffff !important;
+  border-radius: 10px !important;
+  border: 1px solid #000000 !important;
+  color: #000000 !important;
+}
+.toast-gif {
+  background-image: url('@/assets/images/toast/loading.gif');
+}

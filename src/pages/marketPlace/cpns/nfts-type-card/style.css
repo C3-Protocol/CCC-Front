@@ -1,0 +1,96 @@
+.nft-card {
+  border-radius: 6px !important;
+  background: #fff;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  flex: 0 0 360px;
+}
+.nft-card:hover {
+  cursor: pointer;
+  transform: translateY(-4px);
+  border-color: transparent !important;
+  box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.2);
+}
+
+.ant-card-body {
+  padding: 0;
+}
+.ant-card-actions {
+  border-top: 1px solid #f0f0f0 !important;
+  border-radius: 0 0 6px 6px !important;
+}
+
+.image-content {
+  position: relative;
+  width: 100%;
+}
+
+.image-thumb {
+  width: 100%;
+  padding-bottom: 78.75%;
+  position: relative;
+  margin-bottom: 15px;
+  border-radius: 6px 6px 0 0;
+}
+
+.image-thumb-img {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin-bottom: 5px;
+  border-radius: 6px 6px 0 0;
+  image-rendering: pixelated;
+  overflow: hidden;
+}
+.vertical-center {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  align-items: center;
+  text-align: center;
+}
+
+.avator-img {
+  width: 78px;
+  margin-top: -50px;
+  border-radius: 50%;
+  background: #fff;
+  z-index: 1;
+}
+.avator-img-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  margin: 4px;
+  border-radius: 50%;
+  box-shadow: 0px 0px 10px 0px rgb(0 0 0 / 10%);
+}
+
+.content1 {
+  width: 95%;
+  height: 100px;
+  margin: 0 auto 10px;
+}
+
+.ant-image {
+  position: unset;
+}
+
+.ant-image-placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+}
+
+.ant-card-actions > li:not(:last-child) {
+  border-right: 1px solid transparent;
+}
+@media screen and (max-width: 1152px) {
+  .nft-card {
+    flex: 0 0 50%;
+  }
+}
